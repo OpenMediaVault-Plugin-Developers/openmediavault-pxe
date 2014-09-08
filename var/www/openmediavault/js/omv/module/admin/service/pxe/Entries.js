@@ -54,7 +54,7 @@ Ext.define("OMV.module.admin.service.pxe.Entry", {
 		rpcSetMethod: "setEntry",
 		plugins: [{
 				ptype: "configobject"
-		}]
+		}],
 		width: 700,
 		height: 400,
 		
@@ -83,7 +83,7 @@ Ext.define("OMV.module.admin.service.pxe.Entry", {
 						fieldLabel: _("KERNEL"),
 						allowBlank: false
 				},{
-						xtype: "textfield,
+						xtype: "textfield",
 						name: "APPEND",
 						fieldLabel: _("KERNEL"),
 						allowBlank: false
@@ -95,7 +95,7 @@ Ext.define("OMV.module.admin.service.pxe.Entry", {
  * @class OMV.module.admin.service.pxe.Entries
  * @derived OMV.workspace.grid.Panel
  */
-Ext.define("OMV.module.admin.service.pxe.Entries {
+Ext.define("OMV.module.admin.service.pxe.Entries", {
 		extend: "OMV.workspace.grid.Panel",
 		requires: [
 				"OMV.Rpc",
@@ -109,20 +109,20 @@ Ext.define("OMV.module.admin.service.pxe.Entries {
 		
 		hidePagingToolbar: false,
 		stateful: true,
-		stateId "??????",
+		stateId: "??????",
 		colums: [{
 				xtype: "booleaniconcolumn",
 				text: _("Enabled"),
 				sortable: true,
 				dataIndex: "enable",
 				stateID: "enable",
-				align "center",
+				align: "center",
 				width: 80,
 				resizeable: false,
-				trueIcone "switch_on.png",
-				falseIcon; "switch_off.png"
+				trueIcon: "switch_on.png",
+				falseIcon: "switch_off.png"
 		},{
-				text: _("LABEL")
+				text: _("LABEL"),
 				sortable: true,
 				dataIndex: "label",
 				stateID: "label"
@@ -206,7 +206,7 @@ Ext.define("OMV.module.admin.service.pxe.Entries {
 		
 		doDeletion: function(record) {
 				var me = this;
-				OMV.Rpc,request({
+				OMV.Rpc.request({
 						scrope: me,
 						callback: me.onDeletion,
 						rpcData: {
@@ -225,7 +225,7 @@ OMV.WorkspaceManager.registerPanel({
 		path: "/service/pxe",
 		text: _("Entries"),
 		position:  20,
-		className "OMV.module.admin.service.pxe.Entries"
+		className: "OMV.module.admin.service.pxe.Entries"
 });
 							
 				
