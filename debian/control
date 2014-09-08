@@ -1,11 +1,11 @@
-Source: openmediavault-skeleton
+Source: openmediavault-pxe
 Section: net
 Priority: optional
 Maintainer: OpenMediaVault Plugin Developers <plugins@omv-extras.org>
 Build-Depends: debhelper (>= 9.0.0)
 Standards-Version: 3.9.3
 
-Package: openmediavault-skeleton
+Package: openmediavault-pxe
 Architecture: all
-Depends: openmediavault (>= 0.6.0.6), ${misc:Depends}
-Description: Skeleton plugin for OpenMediaVault.
+Depends: openmediavault (>= 1.0), ${misc:Depends}
+Description: pxe plugin for OpenMediaVault.

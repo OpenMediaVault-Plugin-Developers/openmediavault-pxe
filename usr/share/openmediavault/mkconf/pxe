@@ -20,7 +20,7 @@ set -e
 . /etc/default/openmediavault
 . /usr/share/openmediavault/scripts/helper-functions
 
-SERVICE_XPATH=/config/services/skeleton
+SERVICE_XPATH=/config/services/pxe
 
 # Generate configuration files
 

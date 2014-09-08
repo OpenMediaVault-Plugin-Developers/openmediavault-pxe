@@ -2,7 +2,7 @@
 
 include ./openmediavault.mk
 
-PLUGIN_NAME=skeleton
+PLUGIN_NAME=pxe
 
 clean:
 	dh_testdir

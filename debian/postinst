@@ -7,12 +7,12 @@ set -e
 
 case "$1" in
     configure)
-        SERVICE_XPATH_NAME="skeleton"
+        SERVICE_XPATH_NAME="pxe"
         SERVICE_XPATH="/config/services/${SERVICE_XPATH_NAME}"
 
         if ! omv_config_exists "${SERVICE_XPATH}"; then
             omv_config_add_element "/config/services" "${SERVICE_XPATH_NAME}"
-            omv_config_add_element "${SERVICE_XPATH}" "enable" "0"
+            omv_config_add_element "${SERVICE_XPATH}" "entries"
         fi
 
         # Activate package triggers. These triggers are only set during the
