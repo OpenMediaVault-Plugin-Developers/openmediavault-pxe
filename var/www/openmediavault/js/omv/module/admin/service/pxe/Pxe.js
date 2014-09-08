@@ -27,6 +27,6 @@ OMV.WorkspaceManager.registerNode({
     id      : "pxe",
     path    : "/service",
     text    : _("PXE"),
-    icon16  : "images/",
-    iconSvg : "images/"
+    icon16  : "images/skeleton.png",
+    iconSvg : "images/skeleton.svg"
 });
