@@ -18,6 +18,12 @@ public function getSettings($params, $context) {
 public function setSettings($params, $context) {
 // Fill this out later
 }
+public function getEntry() {
+//Fill out later
+}
+public function setEntry() {
+//Fill out later
+}
 }
 // Register the RPC service.
 $rpcServiceMgr = &OMVRpcServiceMgr::getInstance(); // Get the "root" instance for the Services
