@@ -62,7 +62,7 @@ Ext.define("OMV.module.admin.service.pxe.Settings", {
                                       allowNone: true,
                                       plugins: [{
                                                  ptype: "fieldinfo",
-                                                 text: _("The location of the files to share.")
+                                                 text: _("The location of your PXE files.")
                                                 }]
                                     }]
                          }];
