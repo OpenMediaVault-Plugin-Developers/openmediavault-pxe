@@ -33,6 +33,9 @@ Ext.define("OMV.module.admin.service.pxe.Settings", {
         ],
 
         rpcService: "PXE",
+		rpcGetMethod: "getSettings", // name for the function in the rpc that gets the settings
+		rpcSetMethod: "setSettings", // name for the function in the rpc that saves the settings
+
         plugins: [{
                 ptype: "linkedfields",
                 correlations: [{
@@ -42,25 +45,32 @@ Ext.define("OMV.module.admin.service.pxe.Settings", {
                         ],
                         properties: "!allowBlank"
                 }]
-        },
+        }],
 
         getFormItems: function() {
                 var me = this;
                 return [{
-                                xtype: "sharedfoldercombo",
-                                name: "sharedfolderref",
-                                fieldLabel: _("Shared folder"),
-                                allowNone: true,
-                                plugins: [{
-                                        ptype: "fieldinfo",
-                                        text: _("The location of the files to share.")
-                                }]
-                        }]
-                }
+                            xtype:    "fieldset",
+                            title:    _("Settings"),
+                            fieldDefaults:  {
+                                              labelSeparator: ""
+                                            },
+                            items:  [{
+                                      xtype: "sharedfoldercombo",
+                                      name: "sharedfolderref",
+                                      fieldLabel: _("Shared folder"),
+                                      allowNone: true,
+                                      plugins: [{
+                                                 ptype: "fieldinfo",
+                                                 text: _("The location of the files to share.")
+                                                }]
+                                    }]
+                         }];
+        }
 });
 
 OMV.WorkspaceManager.registerPanel({
-        id: "settings",
+        id: "Settings",
         path: "/service/pxe",
         text: _("Settings"),
         position: 10,
