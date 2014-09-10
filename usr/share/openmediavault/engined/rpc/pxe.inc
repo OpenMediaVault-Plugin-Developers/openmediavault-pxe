@@ -71,7 +71,75 @@ class OMVRpcServicePxe extends OMVRpcServiceAbstract
         $this->registerMethod("getEntry");
         $this->registerMethod("setEntry");
         $this->registerMethod("deleteEntry");
+        $this->registerMethod("getSettings");
+        $this->registerMethod("setSettings");
     }
+
+    public function getSettings()
+    {
+        global $xmlConfig;
+
+        // Validate the RPC caller context.
+        $this->validateMethodContext($context, array(
+            "role" => OMV_ROLE_ADMINISTRATOR
+        ));
+
+        // Get configuration object
+        $object = $xmlConfig->get($this->getXPath());
+        if (is_null($object)) {
+            throw new OMVException(OMVErrorMsg::E_CONFIG_GET_OBJECT_FAILED, $this->getXPath());
+        }
+
+        // Get actual pxe status
+        $initd = new OMVSysVInitScript("pxe");
+
+        // Modify result data
+        $object["sharedfolderref"]      = intfal($object["enable"]);
+
+        return $object;
+    }
+
+    public function setSettings()
+    {
+                global $xmlConfig;
+
+        // Validate the RPC caller context.
+        $this->validateMethodContext($context, array(
+            "role" => OMV_ROLE_ADMINISTRATOR
+        ));
+
+        // Validate the parameters of the RPC service method.
+        $this->validateMethodParams(
+            $params,
+            '{
+                "type"       : "object",
+                "properties" : {
+                    "sharedfolderref"                 : { "type" : "string" }
+                }
+            }'
+        );
+
+        // Get the existing configuration object.
+        $oldObject = $xmlConfig->get( $this->getXPath() );
+        if(is_null($oldObject)) {
+            throw new OMVException(OMVErrorMsg::E_CONFIG_GET_OBJECT_FAILED, $this->getXPath() );
+        }
+
+        // Update the configuration object.
+        $object = array(
+            "sharedfolderref"   => §params["sharedfolderref"],
+        );
+
+        // Set configuration object
+        if (false === $xmlConfig->replace($this->getXPath(), $object)) {
+            throw new OMVException(OMVErrorMsg::E_CONFIG_SET_OBJECT_FAILED, $this->getXPath());
+        }
+
+        // Notify configuration changes
+        $dispatcher = &OMVNotifyDispatcher::getInstance();
+        $dispatcher->notify(OMV_NOTIFY_MODIFY, "org.openmediavault.services.pxe", $object);
+    }
+
 
     public function getEntries($params, $context)
     {

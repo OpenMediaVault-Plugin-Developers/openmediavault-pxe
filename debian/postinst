@@ -14,6 +14,8 @@ case "$1" in
             omv_config_add_element "/config/services" "${SERVICE_XPATH_NAME}"
             omv_config_add_element "${SERVICE_XPATH}" "entries"
 			omv_config_add_element "${SERVICE_XPATH}" "menus"
+			omv_config_add_element "${SERVICE_XPATH}" "sharedfolderref"
+			
         fi
 
         # Activate package triggers. These triggers are only set during the
