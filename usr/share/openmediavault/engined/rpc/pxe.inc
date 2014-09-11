@@ -128,16 +128,6 @@ class OMVRpcServicePxe extends OMVRpcServiceAbstract
 
         // Update the configuration object.
         $object = array(
-            "enable" => array_boolval($params, "enable"),
-            "name"   => $params["name"],
-            "port"   => $params["port"],
-            "strict" => array_boolval($params, "strict"),
-            "tivo"   => array_boolval($params, "tivo"),
-            "shares" => isset($oldObject["shares"]) ? $oldObject["shares"] : array(),
-        );        
-
-        // Update the configuration object.
-        $object = array(
             "sharedfolderref" => $params["sharedfolderref"],
             "entries"         => isset($oldObject["entries"]) ? $oldObject["entries"] : array(),            
             "menus"           => isset($oldObject["menus"]) ? $oldObject["menus"] : array()
