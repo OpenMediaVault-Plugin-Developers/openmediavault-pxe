@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 /**
  * Copyright (C) 2014 OpenMediaVault Plugin Developers
@@ -94,7 +94,7 @@ class OMVRpcServicePxe extends OMVRpcServiceAbstract
         $initd = new OMVSysVInitScript("pxe");
 
         // Modify result data
-        $object["sharedfolderref"]      = intfal($object["enable"]);
+        $object["sharedfolderref"] = $object["enable"];
 
         return $object;
     }
@@ -127,7 +127,7 @@ class OMVRpcServicePxe extends OMVRpcServiceAbstract
 
         // Update the configuration object.
         $object = array(
-            "sharedfolderref"   => §params["sharedfolderref"],
+            "sharedfolderref"   => §params("sharedfolderref"),
         );
 
         // Set configuration object

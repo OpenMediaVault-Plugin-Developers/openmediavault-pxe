@@ -23,7 +23,7 @@ require_once "openmediavault/error.inc";
 require_once "openmediavault/util.inc";
 require_once "openmediavault/initscript.inc";
 
-class OMVModuleSkeleton extends OMVModuleServiceAbstract implements
+class OMVModulePxe extends OMVModuleServiceAbstract implements
     OMVINotifyListener,
     OMVIModuleServiceStatus
 {
@@ -31,12 +31,12 @@ class OMVModuleSkeleton extends OMVModuleServiceAbstract implements
 
     private function getEventMessagePath()
     {
-        return "org.openmediavault.services.skeleton";
+        return "org.openmediavault.services.pxe";
     }
 
     private function getXPath()
     {
-        return "/config/services/skeleton";
+        return "/config/services/pxe";
     }
 
     /* /Helpers */
@@ -46,7 +46,7 @@ class OMVModuleSkeleton extends OMVModuleServiceAbstract implements
      */
     public function getName()
     {
-        return "skeleton";
+        return "pxe";
     }
 
     /**
@@ -139,4 +139,4 @@ class OMVModuleSkeleton extends OMVModuleServiceAbstract implements
 
 // Register module
 $moduleMgr = &OMVModuleMgr::getInstance();
-$moduleMgr->registerModule(new OMVModuleSkeleton());
+$moduleMgr->registerModule(new OMVModulePxe());
