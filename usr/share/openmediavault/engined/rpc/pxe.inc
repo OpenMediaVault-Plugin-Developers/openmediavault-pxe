@@ -93,6 +93,10 @@ class OMVRpcServicePxe extends OMVRpcServiceAbstract
         // Modify result data
         $object["sharedfolderref"] = $object["sharedfolderref"];
 
+        // Remove useless fields from the result object.
+        unset($object["entries"]);
+        unset($object["menus"]);
+        
         return $object;
     }
 
@@ -124,7 +128,19 @@ class OMVRpcServicePxe extends OMVRpcServiceAbstract
 
         // Update the configuration object.
         $object = array(
-            "sharedfolderref"   => $params["sharedfolderref"],
+            "enable" => array_boolval($params, "enable"),
+            "name"   => $params["name"],
+            "port"   => $params["port"],
+            "strict" => array_boolval($params, "strict"),
+            "tivo"   => array_boolval($params, "tivo"),
+            "shares" => isset($oldObject["shares"]) ? $oldObject["shares"] : array(),
+        );        
+
+        // Update the configuration object.
+        $object = array(
+            "sharedfolderref" => $params["sharedfolderref"],
+            "entries"         => isset($oldObject["entries"]) ? $oldObject["entries"] : array(),            
+            "menus"           => isset($oldObject["menus"]) ? $oldObject["menus"] : array()
         );
 
         // Set configuration object
