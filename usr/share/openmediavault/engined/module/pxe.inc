@@ -65,13 +65,13 @@ class OMVModulePxe extends OMVModuleServiceAbstract implements
             );
         }
 
-        $initd = new OMVSysVInitScript($this->getName());
+        //$initd = new OMVSysVInitScript($this->getName());
 
         return array(
             "name"    => $this->getName(),
-            "title"   => gettext("Skeleton"),
+            "title"   => gettext("PXE"),
             "enabled" => boolval($object["enable"]),
-            "running" => $initd->status() == 0
+            "running" => true//$initd->status() == 0
         );
     }
 
@@ -80,7 +80,7 @@ class OMVModulePxe extends OMVModuleServiceAbstract implements
      */
     public function applyConfig()
     {
-        $cmd = sprintf("omv-mkconf %s 2>&1", $this->getName());
+        /*$cmd = sprintf("omv-mkconf %s 2>&1", $this->getName());
 
         if (0 !== $this->exec($cmd, $output)) {
             throw new OMVException(
@@ -89,6 +89,7 @@ class OMVModulePxe extends OMVModuleServiceAbstract implements
                 implode("\n", $output)
             );
         }
+		*/
     }
 
     /**
@@ -96,7 +97,7 @@ class OMVModulePxe extends OMVModuleServiceAbstract implements
      */
     public function startService()
     {
-        global $xmlConfig;
+        /*global $xmlConfig;
 
         $object = $xmlConfig->get($this->getXPath());
 
@@ -113,6 +114,7 @@ class OMVModulePxe extends OMVModuleServiceAbstract implements
 
         $initd = new OMVSysVInitScript($this->getName(), true);
         $initd->exec();
+		*/
     }
 
     /**
@@ -120,8 +122,9 @@ class OMVModulePxe extends OMVModuleServiceAbstract implements
      */
     public function stopService()
     {
-        $initd = new OMVSysVInitScript($this->getName());
+        /*$initd = new OMVSysVInitScript($this->getName());
         $initd->exec();
+		*/
     }
 
     /**

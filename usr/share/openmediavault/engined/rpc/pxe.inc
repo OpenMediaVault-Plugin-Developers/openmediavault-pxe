@@ -111,7 +111,7 @@ class OMVRpcServicePxe extends OMVRpcServiceAbstract
             '{
                 "type"       : "object",
                 "properties" : {
-                    "sharedfolderref"                 : { "type" : "string" }
+                    "sharedfolderref": { '.$GLOBALS['OMV_JSONSCHEMA_UUID_NONE'].', "optional" : true }
                 }
             }'
         );
@@ -124,7 +124,7 @@ class OMVRpcServicePxe extends OMVRpcServiceAbstract
 
         // Update the configuration object.
         $object = array(
-            "sharedfolderref"   => §params("sharedfolderref"),
+            "sharedfolderref"   => $params["sharedfolderref"],
         );
 
         // Set configuration object
