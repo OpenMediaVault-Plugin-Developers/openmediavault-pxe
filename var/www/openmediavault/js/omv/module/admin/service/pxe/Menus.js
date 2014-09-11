@@ -37,8 +37,7 @@
 Ext.define("OMV.module.admin.service.pxe.Menu", {
     extend: "OMV.workspace.window.Form",
     requires: [
-        "OMV.workspace.window.plugin.ConfigObject",
-        "OMV.window.Execute"
+        "OMV.workspace.window.plugin.ConfigObject"
     ],
 
     rpcService: "PXE",
