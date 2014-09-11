@@ -88,6 +88,6 @@ OMV.WorkspaceManager.registerPanel({
     id        : "information",
     path      : "/service/pxe",
     text      : _("Setup Info"),
-    position  : 30,
+    position  : 40,
     className : "OMV.module.admin.service.pxe.Information"
 });

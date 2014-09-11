@@ -31,10 +31,10 @@
 // require("js/omv/data/proxy/Rpc.js")
 
 /**
- * @class OMV.module.admin.service.pxe.Entry
+ * @class OMV.module.admin.service.pxe.Menus
  * @derived OMV.workspace.window.Form
  */
-Ext.define("OMV.module.admin.service.pxe.Entry", {
+Ext.define("OMV.module.admin.service.pxe.Menu", {
     extend: "OMV.workspace.window.Form",
     requires: [
         "OMV.workspace.window.plugin.ConfigObject",
@@ -42,8 +42,8 @@ Ext.define("OMV.module.admin.service.pxe.Entry", {
     ],
 
     rpcService: "PXE",
-    rpcGetMethod: "getEntry",
-    rpcSetMethod: "setEntry",
+    rpcGetMethod: "getMenu",
+    rpcSetMethod: "setMenu",
     plugins: [{
         ptype: "configobject"
     }],
@@ -59,13 +59,13 @@ Ext.define("OMV.module.admin.service.pxe.Entry", {
             checked: true
         },{
             xtype: "textfield",
-            name: "label",
-            fieldLabel: _("LABEL"),
+            name: "title",
+            fieldLabel: _("Title"),
             allowBlank: false
         },{
             xtype: "textfield",
-            name: "menu",
-            fieldLabel: _("MENU"),
+            name: "label",
+            fieldLabel: _("Label"),
             allowBlank: true
         },{
             xtype: "textfield",
@@ -77,15 +77,20 @@ Ext.define("OMV.module.admin.service.pxe.Entry", {
             name: "append",
             fieldLabel: _("APPEND"),
             allowBlank: false
-        }];
+        },{
+			xtype: "textfield",
+			name: "parent",
+			fieldLabel: _("Parent"),
+			allowblank: true
+		}];
     }
 });
 
 /**
- * @class OMV.module.admin.service.pxe.Entries
+ * @class OMV.module.admin.service.pxe.Menus
  * @derived OMV.workspace.grid.Panel
  */
-Ext.define("OMV.module.admin.service.pxe.Entries", {
+Ext.define("OMV.module.admin.service.pxe.Menus", {
     extend: "OMV.workspace.grid.Panel",
     requires: [
         "OMV.Rpc",
@@ -94,7 +99,7 @@ Ext.define("OMV.module.admin.service.pxe.Entries", {
         "OMV.data.proxy.Rpc"
     ],
     uses: [
-        "OMV.module.admin.service.pxe.Entry"
+        "OMV.module.admin.service.pxe.Menu"
     ],
 
     hidePagingToolbar: false,
@@ -112,15 +117,15 @@ Ext.define("OMV.module.admin.service.pxe.Entries", {
         trueIcon: "switch_on.png",
         falseIcon: "switch_off.png"
     },{
-        text: _("LABEL"),
+        text: _("Title"),
+        sortable: true,
+        dataIndex: "title",
+        stateID: "title"
+    },{
+        text: _("Label"),
         sortable: true,
         dataIndex: "label",
         stateID: "label"
-    },{
-        text: _("MENU"),
-        sortable: true,
-        dataIndex: "menu",
-        stateID: "menu"
     },{
         text: _("KERNEL"),
         sortable: true,
@@ -131,7 +136,12 @@ Ext.define("OMV.module.admin.service.pxe.Entries", {
         sortable: true,
         dataIndex: "append",
         stateID: "append"
-    }],
+    },{
+		text: _("Parent"),
+		sortable: true,
+		dataIndex: "parent",
+		stateID: "parent"
+	}],
 
     initComponent: function() {
         var me = this;
@@ -142,17 +152,18 @@ Ext.define("OMV.module.admin.service.pxe.Entries", {
                     idProperty: "uuid",
                     fields: [
                         { name: "enable", type: "boolean" },
+                        { name: "title", type: "string" },
                         { name: "label", type: "string" },
-                        { name: "menu", type: "string" },
                         { name: "kernel", type: "string" },
-                        { name: "append", type: "string" }
+                        { name: "append", type: "string" },
+						{ name: "parent", type: "string"}
                     ]
                 }),
                 proxy : {
                     type    : "rpc",
                     rpcData : {
                         service : "PXE",
-                        method  : "getEntries"
+                        method  : "getMenus"
                     }
                 }
             })
@@ -162,8 +173,8 @@ Ext.define("OMV.module.admin.service.pxe.Entries", {
 
     onAddButton: function() {
         var me = this;
-        Ext.create("OMV.module.admin.service.pxe.Entry", {
-            title     : _("Add entry"),
+        Ext.create("OMV.module.admin.service.pxe.Menu", {
+            title     : _("Add menu"),
             uuid      : OMV.UUID_UNDEFINED,
             listeners : {
                 scope  : me,
@@ -177,8 +188,8 @@ Ext.define("OMV.module.admin.service.pxe.Entries", {
     onEditButton : function() {
         var me = this;
         var record = me.getSelected();
-        Ext.create("OMV.module.admin.service.pxe.Entry", {
-            title     : _("Edit Entry"),
+        Ext.create("OMV.module.admin.service.pxe.Menu", {
+            title     : _("Edit Menu"),
             uuid      : record.get("uuid"),
             listeners : {
                 scope  : me,
@@ -196,7 +207,7 @@ Ext.define("OMV.module.admin.service.pxe.Entries", {
             callback : me.onDeletion,
             rpcData  : {
                 service : "PXE",
-                method  : "deleteEntry",
+                method  : "deleteMenu",
                 params  : {
                     uuid : record.get("uuid")
                 }
@@ -206,9 +217,9 @@ Ext.define("OMV.module.admin.service.pxe.Entries", {
 });
 
 OMV.WorkspaceManager.registerPanel({
-    id        : "entries",
+    id        : "menus",
     path      : "/service/pxe",
-    text      : _("Entries"),
-    position  :  30,
-    className : "OMV.module.admin.service.pxe.Entries"
+    text      : _("Menus"),
+    position  :  20,
+    className : "OMV.module.admin.service.pxe.Menus"
 });
