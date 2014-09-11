@@ -75,7 +75,7 @@ class OMVRpcServicePxe extends OMVRpcServiceAbstract
         $this->registerMethod("setSettings");
     }
 
-    public function getSettings()
+    public function getSettings($params, $context)
     {
         global $xmlConfig;
 
@@ -96,7 +96,7 @@ class OMVRpcServicePxe extends OMVRpcServiceAbstract
         return $object;
     }
 
-    public function setSettings()
+    public function setSettings($params, $context)
     {
                 global $xmlConfig;
 
