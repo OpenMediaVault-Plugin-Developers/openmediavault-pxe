@@ -90,11 +90,8 @@ class OMVRpcServicePxe extends OMVRpcServiceAbstract
             throw new OMVException(OMVErrorMsg::E_CONFIG_GET_OBJECT_FAILED, $this->getXPath());
         }
 
-        // Get actual pxe status
-        $initd = new OMVSysVInitScript("pxe");
-
         // Modify result data
-        $object["sharedfolderref"] = $object["enable"];
+        $object["sharedfolderref"] = $object["sharedfolderref"];
 
         return $object;
     }
