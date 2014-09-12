@@ -25,20 +25,18 @@ SERVICE_XPATH=/config/services/pxe
 PXE_SHARED_FOLDER_REF=$(omv_config_get "//services/pxe/sharedfolderref")
 PXE_PATH="$(omv_get_sharedfolder_path "${PXE_SHARED_FOLDER_REF}")"
 PXE_CONFIG="${PXE_PATH}pxelinux.cfg/default"
-PXE_WINPATH=$(omv_config_get "//services/pxe/EnableWinPath")
 
 if [ ! -d "${PXE_PATH}pxelinux.cfg" ]; then
 	mkdir "${PXE_PATH}pxelinux.cfg"
 fi
 
-if [ PXE_WINPATH == true ]; then
+if [ $(omv_config_get "//services/pxe/EnableWinPath") == "1" ]; then
 cat <<EOF > /etc/tftp_remap.conf
 rg \\ /
 EOF
-else
-if [ -f "/etc/tftp_remap.conf" ]; then
-rm /etc/tftp_remap.conf
-
+elif [ -f "/etc/tftp_remap.conf" ]; then
+	rm /etc/tftp_remap.conf
+fi
 cat <<EOF > $PXE_CONFIG
 DEFAULT vesamenu.c32
 PROMPT 0
