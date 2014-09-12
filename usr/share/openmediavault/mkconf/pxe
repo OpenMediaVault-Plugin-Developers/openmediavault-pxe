@@ -24,7 +24,11 @@ SERVICE_XPATH=/config/services/pxe
 
 PXE_SHARED_FOLDER_REF=$(omv_config_get "//services/pxe/sharedfolderref")
 PXE_PATH="$(omv_get_sharedfolder_path "${PXE_SHARED_FOLDER_REF}")"
-PXE_CONFIG="${PXE_PATH}/pxelinux.cfg/default"
+PXE_CONFIG="${PXE_PATH}pxelinux.cfg/default"
+
+if [ ! -d "${PXE_PATH}pxelinux.cfg" ]; then
+	mkdir "${PXE_PATH}pxelinux.cfg"
+fi
 
 cat <<EOF > $PXE_CONFIG
 DEFAULT vesamenu.c32
@@ -36,9 +40,25 @@ LABEL Lokale HDD
  LOCALBOOT 0
 
 EOF
+#Loop through entries and output them into the config file
 
-entry=$(omv_config_get "//services/pxe/[position()=${index}/entries")
-
+index=$(omv_config_get_count "//services/pxe/entries/entry")
+while [ ${index} -gt 0 ]; do
+			enable="$(omv_config_get "//services/pxe/entries/entry[position()=${index}]/enable")"
+			label="$(omv_config_get "//services/pxe/entries/entry[position()=${index}]/label")"
+			menu="$(omv_config_get "//services/pxe/entries/entry[position()=${index}]/menu")"
+			kernel="$(omv_config_get "//services/pxe/entries/entry[position()=${index}]/kernel")"
+			append="$(omv_config_get "//services/pxe/entries/entry[position()=${index}]/append")"
+		if [ "${enable}" != "0" ]; then
+cat <<EOF >> $PXE_CONFIG
+	LABEL ${label}
+		KERNEL ${kernel}
+		APPEND ${append}
+EOF
+		fi
+		
+		index=$(( ${index} - 1 ))
+done
 if [ "${entry}" != "" ]; then
 	entry="${entry}" >> ${PXE_CONFIG}
 fi
