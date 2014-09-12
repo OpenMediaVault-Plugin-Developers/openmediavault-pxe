@@ -92,6 +92,7 @@ class OMVRpcServicePxe extends OMVRpcServiceAbstract
 
         // Modify result data
         $object["sharedfolderref"] = $object["sharedfolderref"];
+		$object["enableWinPath"] = $Object["enableWinPath"];
 
         // Remove useless fields from the result object.
         unset($object["entries"]);
@@ -129,6 +130,7 @@ class OMVRpcServicePxe extends OMVRpcServiceAbstract
         // Update the configuration object.
         $object = array(
             "sharedfolderref" => $params["sharedfolderref"],
+			"enableWinPath" => boolval($params['enableWinPath']),
             "entries"         => isset($oldObject["entries"]) ? $oldObject["entries"] : array(),            
             "menus"           => isset($oldObject["menus"]) ? $oldObject["menus"] : array()
         );
