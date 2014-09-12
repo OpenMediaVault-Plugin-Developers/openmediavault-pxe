@@ -67,7 +67,7 @@ Ext.define("OMV.module.admin.service.pxe.Settings", {
                                     }]
 							},{
 									xtype:	"checkbox",
-									name:	"enableWinPath"
+									name:	"enableWinPath",
 									fieldLabel:	_("Enable Windows Path Support"),
 									checked: false
                          }];

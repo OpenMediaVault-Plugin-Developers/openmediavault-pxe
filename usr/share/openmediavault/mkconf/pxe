@@ -39,12 +39,12 @@ elif [ -f "/etc/tftp_remap.conf" ]; then
 fi
 
 if [ !-f pxelinux/vesamenu.c32 ]; then 
-cp /usr/lib/syslinux/vesamenu.c32 "${PXE_PATH}pxelinux.cfg/"
-if
+	cp /usr/lib/syslinux/vesamenu.c32 "${PXE_PATH}pxelinux.cfg/"
+fi
 
 if [ !-f pxelinux/pxelinux.0 ]; then
-cp /usr/lib/syslinux/pxelinux.0 "${PXE_PATH}pxelinux.cfg/"
-if
+	cp /usr/lib/syslinux/pxelinux.0 "${PXE_PATH}pxelinux.cfg/"
+fi
 
 cat <<EOF > $PXE_CONFIG
 DEFAULT vesamenu.c32
