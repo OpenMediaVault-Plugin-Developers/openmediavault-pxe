@@ -22,6 +22,25 @@ set -e
 
 SERVICE_XPATH=/config/services/pxe
 
-# Generate configuration files
+PXE_PATH=$omv_config_get "//services/pxe/sharedfolderref")
+PXE_CONFIG=`$path`/default
+
+cat <<EOF > $PXE_CONFIG
+DEFAULT vesamenu.c32
+PROMPT 0
+
+MENU TITLE PXE Boot System
+
+LABEL Lokale HDD
+ LOCALBOOT 0
+
+EOF
+
+entry=$(omv_config_get "//services/pxe/[position()=${index}/entries")
+
+if [ "${entry}" != "" ]; then
+	entry="${entry}" >> ${PXE_CONFIG}
+fi
+
 
 exit 0
