@@ -15,7 +15,7 @@ case "$1" in
             omv_config_add_element "${SERVICE_XPATH}" "entries"
             omv_config_add_element "${SERVICE_XPATH}" "menus"
             omv_config_add_element "${SERVICE_XPATH}" "sharedfolderref" ""
-			omv_config_add_element "${SERVICE_XPATH}" "enableWinPath"
+            omv_config_add_element "${SERVICE_XPATH}" "enableWinPath" "0"
         fi
 
         # Activate package triggers. These triggers are only set during the

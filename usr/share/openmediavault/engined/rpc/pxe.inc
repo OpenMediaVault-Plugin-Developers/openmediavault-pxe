@@ -116,7 +116,8 @@ class OMVRpcServicePxe extends OMVRpcServiceAbstract
             '{
                 "type"       : "object",
                 "properties" : {
-                    "sharedfolderref": { '.$GLOBALS['OMV_JSONSCHEMA_UUID_NONE'].', "optional" : true }
+                    "sharedfolderref": { '.$GLOBALS['OMV_JSONSCHEMA_UUID_NONE'].', "optional" : true },
+			"enableWinPath": {"type":"boolean"}
                 }
             }'
         );
@@ -130,7 +131,7 @@ class OMVRpcServicePxe extends OMVRpcServiceAbstract
         // Update the configuration object.
         $object = array(
             "sharedfolderref" => $params["sharedfolderref"],
-			"enableWinPath"	  => boolval($params['enableWinPath']),
+		"enableWinPath"	  => array_boolval($params['enableWinPath']),
             "entries"         => isset($oldObject["entries"]) ? $oldObject["entries"] : array(),            
             "menus"           => isset($oldObject["menus"]) ? $oldObject["menus"] : array()
         );

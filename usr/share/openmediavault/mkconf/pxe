@@ -40,11 +40,11 @@ fi
 
 if [ !-f pxelinux/vesamenu.c32 ]; then 
 cp /usr/lib/syslinux/vesamenu.c32 "${PXE_PATH}pxelinux.cfg/"
-if
+fi
 
 if [ !-f pxelinux/pxelinux.0 ]; then
 cp /usr/lib/syslinux/pxelinux.0 "${PXE_PATH}pxelinux.cfg/"
-if
+fi
 
 cat <<EOF > $PXE_CONFIG
 DEFAULT vesamenu.c32
