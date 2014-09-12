@@ -64,13 +64,13 @@ Ext.define("OMV.module.admin.service.pxe.Settings", {
                                                  ptype: "fieldinfo",
                                                  text: _("The location of your PXE files.")
                                                 }]
-                                    }]
-							},{
-									xtype:	"checkbox",
-									name:	"enableWinPath"
-									fieldLabel:	_("Enable Windows Path Support"),
-									checked: false
-                         }];
+                                    },{
+										xtype:	"checkbox",
+										name:	"enableWinPath",
+										fieldLabel:	_("Enable Windows Path Support"),
+										checked: false
+									}]
+						}];
         }
 });
 
