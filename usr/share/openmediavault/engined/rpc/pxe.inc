@@ -1,5 +1,4 @@
 ﻿<?php
-
 /**
  * Copyright (C) 2014 OpenMediaVault Plugin Developers
  *
@@ -16,7 +15,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 require_once "openmediavault/object.inc";
 require_once "openmediavault/error.inc";
 require_once "openmediavault/util.inc";
@@ -92,18 +90,18 @@ class OMVRpcServicePxe extends OMVRpcServiceAbstract
 
         // Modify result data
         $object["sharedfolderref"] = $object["sharedfolderref"];
-		$object["enableWinPath"] = $object["enableWinPath"];
-		
+        $object["enableWinPath"] = $object["enableWinPath"];
+
         // Remove useless fields from the result object.
         unset($object["entries"]);
         unset($object["menus"]);
-        
+
         return $object;
     }
 
     public function setSettings($params, $context)
     {
-                global $xmlConfig;
+        global $xmlConfig;
 
         // Validate the RPC caller context.
         $this->validateMethodContext($context, array(
@@ -117,7 +115,7 @@ class OMVRpcServicePxe extends OMVRpcServiceAbstract
                 "type"       : "object",
                 "properties" : {
                     "sharedfolderref": { '.$GLOBALS['OMV_JSONSCHEMA_UUID_NONE'].', "optional" : true },
-			"enableWinPath": {"type":"boolean"}
+                    "enableWinPath": {"type":"boolean"}
                 }
             }'
         );
@@ -131,8 +129,8 @@ class OMVRpcServicePxe extends OMVRpcServiceAbstract
         // Update the configuration object.
         $object = array(
             "sharedfolderref" => $params["sharedfolderref"],
-		"enableWinPath"	  => array_boolval($params,"enableWinPath"),
-            "entries"         => isset($oldObject["entries"]) ? $oldObject["entries"] : array(),            
+            "enableWinPath"   => array_boolval($params,"enableWinPath"),
+            "entries"         => isset($oldObject["entries"]) ? $oldObject["entries"] : array(),
             "menus"           => isset($oldObject["menus"]) ? $oldObject["menus"] : array()
         );
 
