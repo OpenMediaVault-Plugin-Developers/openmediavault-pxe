@@ -69,7 +69,7 @@ while [ ${index} -gt 0 ]; do
     if [ "${enable}" != "0" ]; then
         cat <<EOF >> $PXE_CONFIG
 LABEL ${label}
-MENU LABEL ${menu}
+MENU ${menu}
 KERNEL ${kernel}
 APPEND ${append}
 EOF
