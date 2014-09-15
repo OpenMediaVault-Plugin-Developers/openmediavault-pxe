@@ -38,11 +38,11 @@ elif [ -e "/etc/tftp_remap.conf" ]; then
     rm /etc/tftp_remap.conf
 fi
 
-if [ ! -e pxelinux/vesamenu.c32 ]; then
+if [ ! -e ${PXE_PATH}pxelinux.cfg/vesamenu.c32 ]; then
     cp /usr/lib/syslinux/vesamenu.c32 "${PXE_PATH}pxelinux.cfg/"
 fi
 
-if [ ! -e pxelinux/pxelinux.0 ]; then
+if [ ! -e ${PXE_PATH}pxelinux.cfg/pxelinux.0 ]; then
     cp /usr/lib/syslinux/pxelinux.0 "${PXE_PATH}pxelinux.cfg/"
 fi
 
@@ -77,9 +77,5 @@ EOF
 
     index=$(( ${index} - 1 ))
 done
-
-#if [ "${entry}" != "" ]; then
-#   entry="${entry}" >> ${PXE_CONFIG}
-#fi
 
 exit 0
