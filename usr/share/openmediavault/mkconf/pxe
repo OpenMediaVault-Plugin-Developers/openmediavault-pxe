@@ -54,7 +54,6 @@ MENU TITLE PXE Boot System
 
 LABEL Lokale HDD
 LOCALBOOT 0
-
 EOF
 
 #Loop through entries and output them into the config file
@@ -68,6 +67,7 @@ while [ ${index} -gt 0 ]; do
 
     if [ "${enable}" != "0" ]; then
         cat <<EOF >> $PXE_CONFIG
+
 LABEL ${label}
 MENU ${menu}
 KERNEL ${kernel}
@@ -77,9 +77,5 @@ EOF
 
     index=$(( ${index} - 1 ))
 done
-
-#if [ "${entry}" != "" ]; then
-#   entry="${entry}" >> ${PXE_CONFIG}
-#fi
 
 exit 0
