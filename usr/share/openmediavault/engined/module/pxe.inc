@@ -34,6 +34,11 @@ class OMVModulePxe extends OMVModuleServiceAbstract implements
         return "org.openmediavault.services.pxe";
     }
 
+    private function getEventMessagePathEntry()
+    {
+        return sprintf("%s.entries.entry", $this->getEventMessagePath());
+    }
+    
     private function getXPath()
     {
         return "/config/services/pxe";
@@ -135,6 +140,12 @@ class OMVModulePxe extends OMVModuleServiceAbstract implements
         $dispatcher->addListener(
             OMV_NOTIFY_CREATE | OMV_NOTIFY_MODIFY | OMV_NOTIFY_DELETE,
             $this->getEventMessagePath(),
+            array($this, "setDirty")
+        );
+
+        $dispatcher->addListener(
+            OMV_NOTIFY_CREATE | OMV_NOTIFY_MODIFY | OMV_NOTIFY_DELETE,
+            $this->getEventMessagePathEntry(),
             array($this, "setDirty")
         );
     }
