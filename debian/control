@@ -1,5 +1,6 @@
 Source: openmediavault-pxe
 Section: net
+XB-Plugin-Section: network
 Priority: optional
 Maintainer: OpenMediaVault Plugin Developers <plugins@omv-extras.org>
 Build-Depends: debhelper (>= 9.0.0)
