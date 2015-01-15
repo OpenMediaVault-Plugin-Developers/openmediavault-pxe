@@ -48,6 +48,9 @@ fi
 
 cat <<EOF > $PXE_CONFIG
 DEFAULT vesamenu.c32
+TIMEOUT 100
+# timeout="$(omv_config_get"//services/pxe/timeout")"
+# TIMEOUT $timeout
 PROMPT 0
 
 MENU TITLE PXE Boot System
