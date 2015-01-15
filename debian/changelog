@@ -1,9 +1,9 @@
-openmediavault-pxe (1.0.4) UNRELEASED; urgency=low
+openmediavault-pxe (1.0.4) stable; urgency=low
 
   * 
   * added default timeout, hardcoded to 10 seconds
 
- -- OpenMediaVault Plugin Developers <plugins@omv-extras.org>  Thu, 15 Jan 2015 16:36:16 +0100
+ -- OpenMediaVault Plugin Developers <plugins@omv-extras.org>  Thu, 15 Jan 2015 16:41:24 +0100
 
 openmediavault-pxe (1.0.3) stable; urgency=low
 
