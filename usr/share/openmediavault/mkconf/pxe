@@ -46,6 +46,8 @@ if [ ! -e ${PXE_PATH}/pxelinux.0 ]; then
     cp /usr/lib/syslinux/pxelinux.0 "${PXE_PATH}"
 fi
 
+rm $PXE_CONFIG.*  >/dev/null 2>&1
+
 cat <<EOF > $PXE_CONFIG
 DEFAULT vesamenu.c32
 TIMEOUT 100
@@ -84,13 +86,14 @@ LABEL Main Menu
 APPEND pxelinux.cfg/default
 EOF
             fi
-            cat <<EOF > $PXE_CONFIG.$group
+            cat <<EOF >> $PXE_CONFIG.$group
 
 LABEL ${label}
 MENU ${menu}
 KERNEL ${kernel}
 APPEND ${append}
 EOF
+            index=$(( ${index} - 1 ))
         else
             cat <<EOF >> $PXE_CONFIG
 
@@ -105,4 +108,3 @@ EOF
 done
 
 exit 0
-
