@@ -82,7 +82,9 @@ EOF
             if [ ! -e ${PXE_CONFIG}.${group} ]; then
                 cat <<EOF > $PXE_CONFIG.$group
 MENU TITLE PXE Boot System
+
 LABEL Main Menu
+KERNEL vesamenu.c32
 APPEND pxelinux.cfg/default
 EOF
             fi
