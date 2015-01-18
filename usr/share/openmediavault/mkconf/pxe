@@ -76,33 +76,33 @@ while [ ${index} -gt 0 ]; do
             cat <<EOF >> $PXE_CONFIG
 
 LABEL ${group}
-KERNEL vesamenu.c32
-APPEND pxelinux.cfg/default.${group}
+ KERNEL vesamenu.c32
+ APPEND pxelinux.cfg/default.${group}
 EOF
             if [ ! -e ${PXE_CONFIG}.${group} ]; then
                 cat <<EOF > $PXE_CONFIG.$group
 MENU TITLE PXE Boot System
 
 LABEL Main Menu
-KERNEL vesamenu.c32
-APPEND pxelinux.cfg/default
+ KERNEL vesamenu.c32
+ APPEND pxelinux.cfg/default
 EOF
             fi
             cat <<EOF >> $PXE_CONFIG.$group
 
 LABEL ${label}
-MENU ${menu}
-KERNEL ${kernel}
-APPEND ${append}
+ MENU ${menu}
+ KERNEL ${kernel}
+ APPEND ${append}
 EOF
             index=$(( ${index} - 1 ))
         else
             cat <<EOF >> $PXE_CONFIG
 
 LABEL ${label}
-MENU ${menu}
-KERNEL ${kernel}
-APPEND ${append}
+ MENU ${menu}
+ KERNEL ${kernel}
+ APPEND ${append}
 EOF
             index=$(( ${index} - 1 ))
         fi
