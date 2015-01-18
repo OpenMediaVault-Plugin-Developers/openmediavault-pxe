@@ -46,7 +46,7 @@ if [ ! -e ${PXE_PATH}/pxelinux.0 ]; then
     cp /usr/lib/syslinux/pxelinux.0 "${PXE_PATH}"
 fi
 
-rm $PXE_CONFIG.*  >/dev/null 2>&1
+rm ${PXE_CONFIG}.* >/dev/null 2>&1
 
 cat <<EOF > $PXE_CONFIG
 DEFAULT vesamenu.c32
@@ -102,9 +102,9 @@ MENU ${menu}
 KERNEL ${kernel}
 APPEND ${append}
 EOF
+            index=$(( ${index} - 1 ))
         fi
     fi
-    index=$(( ${index} - 1 ))
 done
 
 exit 0
