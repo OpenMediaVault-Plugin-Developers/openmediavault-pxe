@@ -234,6 +234,7 @@ class OMVRpcServicePxe extends OMVRpcServiceAbstract
                 "properties"  : {
                     "uuid"   : { '.$GLOBALS['OMV_JSONSCHEMA_UUID_UNDEFINED'].' },
                     "enable" : { "type" : "boolean" },
+                    "group"  : { "type" : "string" },
                     "label"  : { "type" : "string" },
                     "menu"   : { "type" : "string", "optional" : true },
                     "kernel" : { "type" : "string" },
@@ -246,6 +247,7 @@ class OMVRpcServicePxe extends OMVRpcServiceAbstract
         $object = array(
             "uuid"   => ($params['uuid'] == $GLOBALS['OMV_UUID_UNDEFINED']) ? OMVUtil::uuid() : $params['uuid'],
             "enable" => array_boolval($params, "enable"),
+            "group"  => $params['group'],
             "label"  => $params['label'],
             "menu"   => $params['menu'],
             "kernel" => $params['kernel'],
