@@ -63,6 +63,11 @@ class OMVRpcServicePxe extends OMVRpcServiceAbstract
         return sprintf("%s/entry", $this->getXPathEntries());
     }
 
+    private function getPackageCache()
+    {
+        return "/var/cache/openmediavault/pxe_packages_cache";
+    }
+
     public function initialize()
     {
         $this->registerMethod("getEntries");
@@ -71,6 +76,9 @@ class OMVRpcServicePxe extends OMVRpcServiceAbstract
         $this->registerMethod("deleteEntry");
         $this->registerMethod("getSettings");
         $this->registerMethod("setSettings");
+        
+        $this->registerMethod("getImageList")
+        $this->registerMethod("updatePackageCache")
     }
 
     public function getSettings($params, $context)
@@ -309,6 +317,58 @@ class OMVRpcServicePxe extends OMVRpcServiceAbstract
             $xPath,
             $this->getEventMessagePathEntry()
         );
+    }
+
+    public function getImageList($params, $context)
+    {
+        // Validate the RPC caller context.
+        $this->validateMethodContext(
+            $context,
+            array( "role" => OMV_ROLE_ADMINISTRATOR )
+        );
+
+        // Get current time
+        $time  = time();
+
+        // if the cache doesn't exist or is older than 1 day, download it
+        if ( !file_exists($this->getPackageCache()) or
+             ($time - filemtime($this->getPackageCache()) >= 60*60*24) )
+        {
+            $this->updatePackageCache($params, $context);
+        }
+
+        $objects = array();
+        $packages = file($this->getPackageCache());
+
+        // Loop through our array, show HTML source as HTML source; and line numbers too.
+        foreach ($packages as $package)
+        {
+            if (empty($package))
+                continue;
+
+            $objects[] = array(
+                "name" => $package
+            );
+        }
+
+        // Filter the result.
+        return $this->applyFilter($objects, $params['start'], $params['limit'],
+            $params['sortfield'], $params['sortdir']);
+    }
+
+    public function updatePackageCache($params, $context)
+    {
+        // Validate the RPC caller context.
+        $this->validateMethodContext(
+            $context,
+            array( "role" => OMV_ROLE_ADMINISTRATOR )
+        );
+
+        // Get packages file from web server and put in cache file
+        file_put_contents(
+            $this->getPackageCache(),
+            file_get_contents("http://pxe.omv-extras.org/packages")
+        );        
     }
 }
 
