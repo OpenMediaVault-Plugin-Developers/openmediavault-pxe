@@ -23,54 +23,61 @@
 // require("js/omv/form/plugin/LinkedFields.js")
 
 /**
- * @class OMV.module.admin.service.pxe.Settings
+ * @class OMV.module.admin.service.pxe.Images
  * @derived OMV.workspace.form.Panel
  */
-Ext.define("OMV.module.admin.service.pxe.Settings", {
-        extend: "OMV.workspace.form.Panel",
-        requires: [
-                "OMV.form.field.SharedFolderComboBox",
-		"OMV.data.Store"
-        ],
+Ext.define("OMV.module.admin.service.pxe.Images", {
+    extend : "OMV.workspace.form.Panel",
+    uses   : [
+        "OMV.data.Model",
+        "OMV.data.Store"
+    ],
 
-/**        rpcService: "PXE",
-*		rpcGetMethod: "getImagelist", // name for the function in the rpc that gets the settings
-*		rpcSetMethod: "setImageDownload", // name for the function in the rpc that saves the settings
-*/
+    autoLoadData    : false,
+    hideOkButton    : true,
+    hideResetButton : true,
+    mode            : "local",
 
-
-id : me.getId() + "-location",
-xtype : "combo",
-allowBlank : false,
-editable : false,
-triggerAction : "all",
-displayField : "name",
-valueField : "name",
-store : Ext.create("OMV.data.Store", {
-autoLoad : true,
-submit : false,
-model : OMV.data.Model.createImplicit({
-idProperty : "name",
-fields : [
-{ name : "name", type : "string" },
-]
-}),
-proxy : {
-type : "rpc",
-rpcData : {
-service : "Pxe",
-method : "getImageList"
-}
-}
-}),
-
-
+    getFormItems : function() {
+        var me = this;
+        return [{
+            xtype    : "fieldset",
+            title    : _("PXE Images"),
+            defaults : {
+                labelSeparator : ""
+            },
+            items : [{
+                xtype         : "combo",
+                allowBlank    : false,
+                editable      : false,
+                triggerAction : "all",
+                displayField  : "name",
+                valueField    : "name",
+                store         : Ext.create("OMV.data.Store", {
+                    autoLoad : true,
+                    model    : OMV.data.Model.createImplicit({
+                        idProperty : "name",
+                        fields     : [
+                            { name : "name", type : "string" }
+                        ]
+                    }),
+                    proxy : {
+                        type    : "rpc",
+                        rpcData : {
+                            service : "Pxe",
+                            method  : "getImageList"
+                        }
+                    }
+                })
+            }]
+        }];
+    }
 });
 
 OMV.WorkspaceManager.registerPanel({
-        id: "Settings",
-        path: "/service/pxe",
-        text: _("Settings"),
-        position: 35,
-        className: "OMV.module.admin.service.pxe.Settings"
+    id: "images",
+    path: "/service/pxe",
+    text: _("Images"),
+    position: 35,
+    className: "OMV.module.admin.service.pxe.Images"
 });

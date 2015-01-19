@@ -77,8 +77,9 @@ class OMVRpcServicePxe extends OMVRpcServiceAbstract
         $this->registerMethod("getSettings");
         $this->registerMethod("setSettings");
         
-        $this->registerMethod("getImageList")
-        $this->registerMethod("updatePackageCache")
+        $this->registerMethod("getImageList");
+        $this->registerMethod("updatePackageCache");
+        $this->registerMethod("setImageDownload");
     }
 
     public function getSettings($params, $context)
@@ -328,7 +329,7 @@ class OMVRpcServicePxe extends OMVRpcServiceAbstract
         );
 
         // Get current time
-        $time  = time();
+        $time = time();
 
         // if the cache doesn't exist or is older than 1 day, download it
         if ( !file_exists($this->getPackageCache()) or
@@ -370,6 +371,16 @@ class OMVRpcServicePxe extends OMVRpcServiceAbstract
             file_get_contents("http://pxe.omv-extras.org/packages")
         );        
     }
+
+    public function setImageDownload($params, $context)
+    {
+        // Validate the RPC caller context.
+        $this->validateMethodContext(
+            $context,
+            array( "role" => OMV_ROLE_ADMINISTRATOR )
+        );
+
+    }    
 }
 
 // Register the RPC service.
