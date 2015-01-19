@@ -29,7 +29,8 @@
 Ext.define("OMV.module.admin.service.pxe.Settings", {
         extend: "OMV.workspace.form.Panel",
         requires: [
-                "OMV.form.field.SharedFolderComboBox"
+                "OMV.form.field.SharedFolderComboBox",
+		"OMV.data.Store"
         ],
 
 /**        rpcService: "PXE",
@@ -37,41 +38,32 @@ Ext.define("OMV.module.admin.service.pxe.Settings", {
 *		rpcSetMethod: "setImageDownload", // name for the function in the rpc that saves the settings
 */
 
-        plugins: [{
-                ptype: "linkedfields",
-                correlations: [{
-                        name: "combofield",
-                        conditions: [
-                                { name: "image", value: true }
-                        ],
-                        properties: "!allowBlank"
-                }]
-        }],
 
-        getFormItems: function() {
-                var me = this;
-                return [{
-                            xtype:    "fieldset",
-                            title:    _("Image Installation"),
-                            fieldDefaults:  {
-                                              labelSeparator: ""
-                                            },{
-                            items: 
-		xtype         : "combo",
-                name          : "pxe_image",
-                fieldLabel    : _("Distribution"),
-                queryMode     : "local",
-                store         : [],
-                allowBlank    : false,
-                editable      : false,
-                triggerAction : "all",
-                plugins       : [{
-		ptype : "fieldinfo",
-                text  : _("The Distribution you want to install.")
- 
-                                                }]
-                                    }];
-        }
+id : me.getId() + "-location",
+xtype : "combo",
+allowBlank : false,
+editable : false,
+triggerAction : "all",
+displayField : "name",
+valueField : "uuid",
+store : Ext.create("OMV.data.Store", {
+autoLoad : true,
+model : OMV.data.Model.createImplicit({
+idProperty : "name",
+fields : [
+{ name : "uuid", type : "string" },
+]
+}),
+proxy : {
+type : "rpc",
+rpcData : {
+service : "Pxe",
+method : "getImageList"
+}
+}
+}),
+
+
 });
 
 OMV.WorkspaceManager.registerPanel({
