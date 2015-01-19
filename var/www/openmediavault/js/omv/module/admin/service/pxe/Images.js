@@ -45,13 +45,14 @@ allowBlank : false,
 editable : false,
 triggerAction : "all",
 displayField : "name",
-valueField : "uuid",
+valueField : "name",
 store : Ext.create("OMV.data.Store", {
 autoLoad : true,
+submit : false,
 model : OMV.data.Model.createImplicit({
 idProperty : "name",
 fields : [
-{ name : "uuid", type : "string" },
+{ name : "name", type : "string" },
 ]
 }),
 proxy : {
