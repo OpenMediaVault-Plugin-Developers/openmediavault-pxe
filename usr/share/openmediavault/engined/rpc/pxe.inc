@@ -382,11 +382,21 @@ class OMVRpcServicePxe extends OMVRpcServiceAbstract
             array( "role" => OMV_ROLE_ADMINISTRATOR )
         );
 
+            templocation=/tmp/pxeinstall
+
         // download package
+            
+            mkdir -p /tmp/pxeinstall
+            wget http://pxe.omv-extras.org/${PACKAGE} ${templocation}
 
         // unzip package
+        
+            tar xf ${templocation}/${PACKAGE}
+            cd ${templocation} && rm *.tar.gz
 
         // put files in proper location
+        
+            find ${templocation} -maxdepth 1 -mindepth 1 -not -name config.cfg -print0 | xargs -0 mv -t ${PXEPATH}
 
         // add info from config.txt to entries
         // NEEDS WORK AND ERROR CHECKING
@@ -400,6 +410,10 @@ class OMVRpcServicePxe extends OMVRpcServiceAbstract
             "kernel" => $file[3],
             "append" => $file[4]
         );
+        
+        // remove config file afterwards
+        
+            cd ${templocation} && rm config.txt
 
         $this->setEntry($object, $context);
     }    
