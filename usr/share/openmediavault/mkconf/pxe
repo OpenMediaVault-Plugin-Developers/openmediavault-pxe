@@ -140,7 +140,6 @@ package()
 case ${command} in
     package)
         package
-        update
     ;;
 
     *)

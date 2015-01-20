@@ -96,8 +96,45 @@ Ext.define("OMV.module.admin.service.pxe.Images", {
                         }
                     }
                 })
+            },{
+                xtype   : "button",
+                name    : "install",
+                text    : _("install"),
+                scope   : this,
+                handler : Ext.Function.bind(me.onInstallButton, me, [ me ]),
+                margin  : "0 0 7 0"
             }]
         }];
+    },
+
+    onInstallButton : function() {
+        var me = this;
+        var package = me.findField("images").value;
+        var wnd = Ext.create("OMV.window.Execute", {
+            title           : _("Installing ") + package + " ...",
+            rpcService      : "Pxe",
+            rpcMethod       : "setImageDownload",
+            rpcParams       : {
+                "package"  : package
+            },
+            rpcIgnoreErrors : true,
+            hideStartButton : true,
+            hideStopButton  : true,
+            listeners       : {
+                scope     : me,
+                finish    : function(wnd, response) {
+                    wnd.appendValue(_("Done..."));
+                    wnd.setButtonDisabled("close", false);
+                },
+                exception : function(wnd, error) {
+                    OMV.MessageBox.error(null, error);
+                    wnd.setButtonDisabled("close", false);
+                }
+            }
+        });
+        wnd.setButtonDisabled("close", true);
+        wnd.show();
+        wnd.start();
     }
 });
 
