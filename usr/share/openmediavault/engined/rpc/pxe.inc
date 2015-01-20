@@ -23,10 +23,13 @@ require_once "openmediavault/notify.inc";
 
 class OMVRpcServicePxe extends OMVRpcServiceAbstract
 {
+    private $templocation = "/tmp/pxeinstall/";
+
     public function getName()
     {
         return "Pxe";
     }
+
 
     private function getPluginName()
     {
@@ -382,21 +385,25 @@ class OMVRpcServicePxe extends OMVRpcServiceAbstract
             array( "role" => OMV_ROLE_ADMINISTRATOR )
         );
 
-            templocation=/tmp/pxeinstall
+        //    templocation=/tmp/pxeinstall
 
         // download package
-            
-            mkdir -p /tmp/pxeinstall
-            wget http://pxe.omv-extras.org/${PACKAGE} ${templocation}
+
+        mkdir($this->$templocation, 0700);
+        file_put_contents($this->$templocation . $PACKAGE, file_get_contents("http://pxe.omv-extras.org/" . $PACKAGE));
+
+
+        //    mkdir -p /tmp/pxeinstall
+        //    wget http://pxe.omv-extras.org/${PACKAGE} ${templocation}
 
         // unzip package
-        
-            tar xf ${templocation}/${PACKAGE}
-            cd ${templocation} && rm *.tar.gz
+
+        //    tar xf ${templocation}/${PACKAGE}
+        //    cd ${templocation} && rm *.tar.gz
 
         // put files in proper location
-        
-            find ${templocation} -maxdepth 1 -mindepth 1 -not -name config.cfg -print0 | xargs -0 mv -t ${PXEPATH}
+
+        //    find ${templocation} -maxdepth 1 -mindepth 1 -not -name config.cfg -print0 | xargs -0 mv -t ${PXEPATH}
 
         // add info from config.txt to entries
         // NEEDS WORK AND ERROR CHECKING
@@ -412,8 +419,10 @@ class OMVRpcServicePxe extends OMVRpcServiceAbstract
         );
         
         // remove config file afterwards
-        
-            cd ${templocation} && rm config.txt
+
+        //rmdir($this->$this->$templocation);
+        unlink($this->$templocation . "config.txt");
+        //    cd ${templocation} && rm config.txt
 
         $this->setEntry($object, $context);
     }    
