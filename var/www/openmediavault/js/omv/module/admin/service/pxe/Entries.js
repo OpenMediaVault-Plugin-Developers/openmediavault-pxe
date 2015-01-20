@@ -57,6 +57,11 @@ Ext.define("OMV.module.admin.service.pxe.Entry", {
             fieldLabel: _("Enable"),
             checked: true
         },{
+            xtype      : "textfield",
+            name       : "group",
+            fieldLabel : _("Group"),
+            allowBlank : false
+        },{
             xtype: "textfield",
             name: "label",
             fieldLabel: _("LABEL"),
@@ -111,6 +116,11 @@ Ext.define("OMV.module.admin.service.pxe.Entries", {
         trueIcon: "switch_on.png",
         falseIcon: "switch_off.png"
     },{
+        text      : _("Group"),
+        sortable  : true,
+        dataIndex : "group",
+        stateId   : "group"
+    },{
         text: _("LABEL"),
         sortable: true,
         dataIndex: "label",
@@ -141,6 +151,7 @@ Ext.define("OMV.module.admin.service.pxe.Entries", {
                     idProperty: "uuid",
                     fields: [
                         { name: "enable", type: "boolean" },
+                        { name: "group", type: "string" },
                         { name: "label", type: "string" },
                         { name: "menu", type: "string" },
                         { name: "kernel", type: "string" },
