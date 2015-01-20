@@ -50,7 +50,8 @@ Ext.define("OMV.module.admin.service.pxe.Images", {
                 OMV.Rpc.request({
                     scope       : this,
                     callback    : function(id, success, response) {
-                        this.doReload();
+                        var field = me.findField("images");
+                        field.store.reload();
                     },
                     relayErrors : false,
                     rpcData     : {
@@ -73,6 +74,7 @@ Ext.define("OMV.module.admin.service.pxe.Images", {
             },
             items : [{
                 xtype         : "combo",
+                name          : "images",
                 allowBlank    : false,
                 editable      : false,
                 triggerAction : "all",

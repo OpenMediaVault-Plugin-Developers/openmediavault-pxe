@@ -382,6 +382,26 @@ class OMVRpcServicePxe extends OMVRpcServiceAbstract
             array( "role" => OMV_ROLE_ADMINISTRATOR )
         );
 
+        // download package
+
+        // unzip package
+
+        // put files in proper location
+
+        // add info from config.txt to entries
+        // NEEDS WORK AND ERROR CHECKING
+        $file = file_get_contents($this->getPackageCache());
+        $object = array(
+            "uuid"   => OMVUtil::uuid(),
+            "enable" => true,
+            "group"  => $file[0],
+            "label"  => $file[1],
+            "menu"   => $file[2],
+            "kernel" => $file[3],
+            "append" => $file[4]
+        );
+
+        $this->setEntry($object, $context);
     }    
 }
 
