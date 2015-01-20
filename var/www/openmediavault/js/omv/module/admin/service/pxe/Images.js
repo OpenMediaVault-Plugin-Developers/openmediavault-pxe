@@ -1,6 +1,4 @@
 /**
- * This file is part of OpenMediaVault.
- *
  * @license   http://www.gnu.org/licenses/gpl.html GPL Version 3
  * @author    Volker Theile <volker.theile@openmediavault.org>
  * @copyright Copyright (c) 2009-2014 Volker Theile
@@ -37,6 +35,33 @@ Ext.define("OMV.module.admin.service.pxe.Images", {
     hideOkButton    : true,
     hideResetButton : true,
     mode            : "local",
+
+    getButtonItems : function() {
+        var me = this;
+        var items = me.callParent(arguments);
+        items.push({
+            xtype    : "button",
+            text     : _("Update"),
+            icon     : "images/reboot.png",
+            iconCls  : Ext.baseCSSPrefix + "btn-icon-16x16",
+            scope    : me,
+            handler  : function() {
+                // Execute RPC.
+                OMV.Rpc.request({
+                    scope       : this,
+                    callback    : function(id, success, response) {
+                        this.doReload();
+                    },
+                    relayErrors : false,
+                    rpcData     : {
+                        service  : "Pxe",
+                        method   : "updatePackageCache"
+                    }
+                });
+            }
+        });
+        return items;
+    },
 
     getFormItems : function() {
         var me = this;
