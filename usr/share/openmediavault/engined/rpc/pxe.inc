@@ -76,7 +76,7 @@ class OMVRpcServicePxe extends OMVRpcServiceAbstract
         $this->registerMethod("deleteEntry");
         $this->registerMethod("getSettings");
         $this->registerMethod("setSettings");
-        
+
         $this->registerMethod("getImageList");
         $this->registerMethod("updatePackageCache");
         $this->registerMethod("setImageDownload");
@@ -371,7 +371,7 @@ class OMVRpcServicePxe extends OMVRpcServiceAbstract
         file_put_contents(
             $this->getPackageCache(),
             file_get_contents("http://pxe.omv-extras.org/packages")
-        );        
+        );
     }
 
     public function setImageDownload($params, $context)
@@ -382,25 +382,33 @@ class OMVRpcServicePxe extends OMVRpcServiceAbstract
             array( "role" => OMV_ROLE_ADMINISTRATOR )
         );
 
-            templocation=/tmp/pxeinstall
+        // Create a background process.
+        $bgStatusFilename = $this->createBgProcStatus();
+        $pid = $this->fork();
+        if ($pid > 0)   // Parent process.
+        {
+            $this->initializeBgProcStatus($bgStatusFilename, $pid);
+            return $bgStatusFilename;
+        }
 
-        // download package
-            
-            mkdir -p /tmp/pxeinstall
-            wget http://pxe.omv-extras.org/${PACKAGE} ${templocation}
+        // Child process.
+        try {
+            $bgOutputFilename = $this->createBgProcOutput();
+            $this->updateBgProcStatus($bgStatusFilename, "outputfilename", $bgOutputFilename);
 
-        // unzip package
-        
-            tar xf ${templocation}/${PACKAGE}
-            cd ${templocation} && rm *.tar.gz
+            $cmd = sprintf("omv-mkconf pxe package %s 2>&1", $params['package']);
+            $this->exec($cmd, $output, $bgOutputFilename);
+            $this->finalizeBgProcStatus($bgStatusFilename, $output);
 
-        // put files in proper location
-        
-            find ${templocation} -maxdepth 1 -mindepth 1 -not -name config.cfg -print0 | xargs -0 mv -t ${PXEPATH}
+        } catch(Exception $e) {
+            $this->finalizeBgProcStatus($bgStatusFilename, "", $e);
+            exit(1);
+        }
 
         // add info from config.txt to entries
         // NEEDS WORK AND ERROR CHECKING
-        $file = file_get_contents($this->getPackageCache());
+        $configTxt = "/tmp/pxeinstall/config.txt";
+        $file = file_get_contents($configTxt);
         $object = array(
             "uuid"   => OMVUtil::uuid(),
             "enable" => true,
@@ -410,13 +418,15 @@ class OMVRpcServicePxe extends OMVRpcServiceAbstract
             "kernel" => $file[3],
             "append" => $file[4]
         );
-        
-        // remove config file afterwards
-        
-            cd ${templocation} && rm config.txt
 
         $this->setEntry($object, $context);
-    }    
+
+        // remove config.txt
+        unlink($configTxt);
+
+        $cmd = "omv-mkconf pxe update 2>&1";
+        OMVUtil::exec($cmd, $output, $result);
+    }
 }
 
 // Register the RPC service.

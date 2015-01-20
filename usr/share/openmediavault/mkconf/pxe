@@ -26,29 +26,33 @@ PXE_SHARED_FOLDER_REF=$(omv_config_get "//services/pxe/sharedfolderref")
 PXE_PATH="$(omv_get_sharedfolder_path "${PXE_SHARED_FOLDER_REF}")"
 PXE_CONFIG="${PXE_PATH}/pxelinux.cfg/default"
 
-if [ ! -d "${PXE_PATH}/pxelinux.cfg" ]; then
-    mkdir "${PXE_PATH}/pxelinux.cfg"
-fi
+package=`echo $2 | cut -d \  -f 2`
 
-if [ $(omv_config_get "//services/pxe/EnableWinPath") == "1" ]; then
-    cat <<EOF > /etc/tftp_remap.conf
+update()
+{
+    if [ ! -d "${PXE_PATH}/pxelinux.cfg" ]; then
+        mkdir "${PXE_PATH}/pxelinux.cfg"
+    fi
+
+    if [ $(omv_config_get "//services/pxe/EnableWinPath") == "1" ]; then
+        cat <<EOF > /etc/tftp_remap.conf
 rg \\ /
 EOF
-elif [ -e "/etc/tftp_remap.conf" ]; then
-    rm /etc/tftp_remap.conf
-fi
+    elif [ -e "/etc/tftp_remap.conf" ]; then
+        rm /etc/tftp_remap.conf
+    fi
 
-if [ ! -e ${PXE_PATH}/vesamenu.c32 ]; then
-    cp /usr/lib/syslinux/vesamenu.c32 "${PXE_PATH}"
-fi
+    if [ ! -e ${PXE_PATH}/vesamenu.c32 ]; then
+        cp /usr/lib/syslinux/vesamenu.c32 "${PXE_PATH}"
+    fi
 
-if [ ! -e ${PXE_PATH}/pxelinux.0 ]; then
-    cp /usr/lib/syslinux/pxelinux.0 "${PXE_PATH}"
-fi
+    if [ ! -e ${PXE_PATH}/pxelinux.0 ]; then
+        cp /usr/lib/syslinux/pxelinux.0 "${PXE_PATH}"
+    fi
 
-rm ${PXE_CONFIG}.* >/dev/null 2>&1
+    rm ${PXE_CONFIG}.* >/dev/null 2>&1
 
-cat <<EOF > $PXE_CONFIG
+    cat <<EOF > $PXE_CONFIG
 DEFAULT vesamenu.c32
 TIMEOUT 100
 # timeout="$(omv_config_get"//services/pxe/timeout")"
@@ -61,52 +65,87 @@ LABEL Lokale HDD
 LOCALBOOT 0
 EOF
 
-#Loop through entries and output them into the config file
-index=$(omv_config_get_count "//services/pxe/entries/entry")
-while [ ${index} -gt 0 ]; do
-    enable="$(omv_config_get "//services/pxe/entries/entry[position()=${index}]/enable")"
-    group="$(omv_config_get "//services/pxe/entries/entry[position()=${index}]/group")"
-    label="$(omv_config_get "//services/pxe/entries/entry[position()=${index}]/label")"
-    menu="$(omv_config_get "//services/pxe/entries/entry[position()=${index}]/menu")"
-    kernel="$(omv_config_get "//services/pxe/entries/entry[position()=${index}]/kernel")"
-    append="$(omv_config_get "//services/pxe/entries/entry[position()=${index}]/append")"
+    #Loop through entries and output them into the config file
+    index=$(omv_config_get_count "//services/pxe/entries/entry")
+    while [ ${index} -gt 0 ]; do
+        enable="$(omv_config_get "//services/pxe/entries/entry[position()=${index}]/enable")"
+        group="$(omv_config_get "//services/pxe/entries/entry[position()=${index}]/group")"
+        label="$(omv_config_get "//services/pxe/entries/entry[position()=${index}]/label")"
+        menu="$(omv_config_get "//services/pxe/entries/entry[position()=${index}]/menu")"
+        kernel="$(omv_config_get "//services/pxe/entries/entry[position()=${index}]/kernel")"
+        append="$(omv_config_get "//services/pxe/entries/entry[position()=${index}]/append")"
 
-    if [ "${enable}" != "0" ]; then
-        if [ "${group}" != "Default" ]; then
-            cat <<EOF >> $PXE_CONFIG
+        if [ "${enable}" != "0" ]; then
+            if [ "${group}" != "Default" ]; then
+                cat <<EOF >> $PXE_CONFIG
 
 LABEL ${group}
  KERNEL vesamenu.c32
  APPEND pxelinux.cfg/default.${group}
 EOF
-            if [ ! -e ${PXE_CONFIG}.${group} ]; then
-                cat <<EOF > $PXE_CONFIG.$group
+                if [ ! -e ${PXE_CONFIG}.${group} ]; then
+                    cat <<EOF > $PXE_CONFIG.$group
 MENU TITLE PXE Boot System
 
 LABEL Main Menu
  KERNEL vesamenu.c32
  APPEND pxelinux.cfg/default
 EOF
+                fi
+                cat <<EOF >> $PXE_CONFIG.$group
+
+LABEL ${label}
+ MENU ${menu}
+ KERNEL ${kernel}
+ APPEND ${append}
+EOF
+                index=$(( ${index} - 1 ))
+            else
+                cat <<EOF >> $PXE_CONFIG
+
+LABEL ${label}
+ MENU ${menu}
+ KERNEL ${kernel}
+ APPEND ${append}
+EOF
+                index=$(( ${index} - 1 ))
             fi
-            cat <<EOF >> $PXE_CONFIG.$group
-
-LABEL ${label}
- MENU ${menu}
- KERNEL ${kernel}
- APPEND ${append}
-EOF
-            index=$(( ${index} - 1 ))
-        else
-            cat <<EOF >> $PXE_CONFIG
-
-LABEL ${label}
- MENU ${menu}
- KERNEL ${kernel}
- APPEND ${append}
-EOF
-            index=$(( ${index} - 1 ))
         fi
-    fi
-done
+    done
+}
+
+package()
+{
+    export LANG=C
+
+    templocation=/tmp/pxeinstall
+
+    // download package
+    mkdir -p ${templocation}
+    wget http://pxe.omv-extras.org/${package} -P ${templocation}
+
+    // unzip package
+    tar xf ${templocation}/${package}
+    cd ${templocation}
+    rm *.tar.gz
+
+    // put files in proper location
+    find ${templocation} -maxdepth 1 -mindepth 1 -not -name config.cfg -print0 | xargs -0 mv -t ${PXE_PATH}
+
+    // remove config file afterwards
+    cd ${templocation}
+    rm config.txt
+}
+
+case ${command} in
+    package)
+        package
+        update
+    ;;
+
+    *)
+        update
+    ;;
+esac
 
 exit 0
