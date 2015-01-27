@@ -1,3 +1,9 @@
+openmediavault-pxe (1.1) UNRELEASED; urgency=low
+
+  * Add pxe image download
+
+ -- OpenMediaVault Plugin Developers <plugins@omv-extras.org>  Tue, 27 Jan 2015 09:07:21 -0600
+
 openmediavault-pxe (1.0.4) stable; urgency=low
 
   * 
