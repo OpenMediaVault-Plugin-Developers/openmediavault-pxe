@@ -36,6 +36,8 @@ Ext.define("OMV.module.admin.service.pxe.Images", {
     hideResetButton : true,
     mode            : "local",
 
+    packageName : "",
+
     getButtonItems : function() {
         var me = this;
         var items = me.callParent(arguments);
@@ -95,11 +97,17 @@ Ext.define("OMV.module.admin.service.pxe.Images", {
                             method  : "getImageList"
                         }
                     }
-                })
+                }),
+                listeners     : {
+                    scope  : me,
+                    change : function(combo, value) {
+                        me.packageName = value;
+                    }
+                }                
             },{
                 xtype   : "button",
                 name    : "install",
-                text    : _("install"),
+                text    : _("Install"),
                 scope   : this,
                 handler : Ext.Function.bind(me.onInstallButton, me, [ me ]),
                 margin  : "0 0 7 0"
@@ -109,13 +117,12 @@ Ext.define("OMV.module.admin.service.pxe.Images", {
 
     onInstallButton : function() {
         var me = this;
-        var package = me.findField("images").value;
         var wnd = Ext.create("OMV.window.Execute", {
-            title           : _("Installing ") + package + " ...",
+            title           : _("Installing ") + me.packageName + " ...",
             rpcService      : "Pxe",
             rpcMethod       : "setImageDownload",
             rpcParams       : {
-                "package"  : package
+                "package"  : me.packageName
             },
             rpcIgnoreErrors : true,
             hideStartButton : true,

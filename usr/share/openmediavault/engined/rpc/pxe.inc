@@ -406,17 +406,21 @@ class OMVRpcServicePxe extends OMVRpcServiceAbstract
         }
 
         // add info from config.txt to entries
-        // NEEDS WORK AND ERROR CHECKING
         $configTxt = "/tmp/pxeinstall/config.txt";
-        $file = file_get_contents($configTxt);
+        $file = explode("\n", file_get_contents($configTxt));
+
+        $label  = trim(preg_replace("/LABEL/", "", $file[0], 1));
+        $kernel = trim(preg_replace("/KERNEL/", "", $file[1], 1));
+        $append = trim(preg_replace("/APPEND/", "", $file[2], 1));
+
         $object = array(
-            "uuid"   => OMVUtil::uuid(),
+            "uuid"   => $GLOBALS['OMV_UUID_UNDEFINED'],
             "enable" => true,
-            "group"  => $file[0],
-            "label"  => $file[1],
-            "menu"   => $file[2],
-            "kernel" => $file[3],
-            "append" => $file[4]
+            "group"  => "Default",
+            "label"  => $label,
+            "menu"   => "",
+            "kernel" => $kernel,
+            "append" => $append
         );
 
         $this->setEntry($object, $context);
