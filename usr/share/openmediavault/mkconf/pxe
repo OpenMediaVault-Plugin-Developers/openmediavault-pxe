@@ -129,6 +129,12 @@ package()
     # download package
     wget http://pxe.omv-extras.org/${package} -P "${PXE_PATH}"
 
+    # Check to see if downloaded package exists
+    if [ ! -f "${PXE_PATH}/${package}" ]; then
+        echo "${package} was not downloaded."
+        exit 1
+    fi
+
     # unzip package
     tar xvzf "${PXE_PATH}/${package}" -C "${PXE_PATH}"
 
