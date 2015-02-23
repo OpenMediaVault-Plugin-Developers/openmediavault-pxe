@@ -1,3 +1,9 @@
+openmediavault-pxe (1.2) stable; urgency=low
+
+  * Fix image list
+
+ -- OpenMediaVault Plugin Developers <plugins@omv-extras.org>  Mon, 23 Feb 2015 10:49:30 -0600
+
 openmediavault-pxe (1.1) stable; urgency=low
 
   * Add pxe image download

@@ -350,13 +350,12 @@ class OMVRpcServicePxe extends OMVRpcServiceAbstract
                 continue;
 
             $objects[] = array(
-                "name" => $package
+                "name" => trim($package)
             );
         }
 
         // Filter the result.
-        return $this->applyFilter($objects, $params['start'], $params['limit'],
-            $params['sortfield'], $params['sortdir']);
+        return $objects;
     }
 
     public function updatePackageCache($params, $context)
