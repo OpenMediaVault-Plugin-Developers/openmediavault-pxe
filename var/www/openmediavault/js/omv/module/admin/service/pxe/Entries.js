@@ -103,7 +103,7 @@ Ext.define("OMV.module.admin.service.pxe.Entries", {
 
     hidePagingToolbar: false,
     stateful: true,
-    stateId: "??????",
+    stateId: "ba17a72d-1104-1232-a31b-1148f4ea6dbe",
     columns: [{
         xtype: "booleaniconcolumn",
         text: _("Enabled"),

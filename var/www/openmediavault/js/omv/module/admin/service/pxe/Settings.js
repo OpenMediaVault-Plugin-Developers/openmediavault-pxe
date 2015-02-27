@@ -68,7 +68,11 @@ Ext.define("OMV.module.admin.service.pxe.Settings", {
 										xtype:	"checkbox",
 										name:	"enableWinPath",
 										fieldLabel:	_("Enable Windows Path Support"),
-										checked: false
+										checked: false,
+                    plugins: [{
+                        ptype: "fieldinfo",
+                        text: _("If enabled, add -m /etc/tftp_remap.conf to the Extra options box in the tftp server tab.")
+                    }]
 									}]
 						}];
         }

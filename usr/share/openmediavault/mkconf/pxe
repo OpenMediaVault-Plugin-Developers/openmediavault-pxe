@@ -36,18 +36,12 @@ update()
     mkdir -p "${PXE_CONFIG_PATH}"
     enablewinpath=$(omv_config_get "${SERVICE_XPATH}/enableWinPath")
 
-    tftpdDefaults="/etc/default/tftpd-hpa"
-    optionsWinPath="TFTP_OPTIONS=\"--secure --retransmit 1000000 --blocksize 8192\""
-    optionsNoWinPath="TFTP_OPTIONS=\"--secure --retransmit 1000000 --blocksize 8192 -m /etc/tftp_remap.conf\""
-
     if [ "${enablewinpath}" = "1" ]; then
         cat <<EOF > /etc/tftp_remap.conf
 rg \\ /
 EOF
-        sed -i 's/${optionsNoWinPath}/${optionsWinPath}/g' ${tftpdDefaults}
     elif [ -e "/etc/tftp_remap.conf" ]; then
         rm /etc/tftp_remap.conf
-        sed -i 's/${optionsWinPath}/${optionsNoWinPath}/g' ${tftpdDefaults}
     fi
     invoke-rc.d tftpd-hpa restart
 
