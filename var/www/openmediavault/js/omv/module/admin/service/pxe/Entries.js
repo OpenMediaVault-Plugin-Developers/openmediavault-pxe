@@ -150,6 +150,7 @@ Ext.define("OMV.module.admin.service.pxe.Entries", {
                 model: OMV.data.Model.createImplicit({
                     idProperty: "uuid",
                     fields: [
+                        { name: "uuid", type: "string" },
                         { name: "enable", type: "boolean" },
                         { name: "group", type: "string" },
                         { name: "label", type: "string" },
@@ -202,7 +203,7 @@ Ext.define("OMV.module.admin.service.pxe.Entries", {
     doDeletion : function(record) {
         var me = this;
         OMV.Rpc.request({
-            scrope   : me,
+            scope   : me,
             callback : me.onDeletion,
             rpcData  : {
                 service : "PXE",
