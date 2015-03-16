@@ -141,7 +141,7 @@ package()
 
     # put config.txt in temp directory
     mv -f "${PXE_PATH}"/config.txt "${templocation}"
-
+    
     # remove downloaded package file
     rm -f "${PXE_PATH}/${package}"
 }

@@ -98,8 +98,7 @@ class OMVRpcServicePxe extends OMVRpcServiceAbstract
         }
 
         // Modify result data
-        $object["sharedfolderref"] = $object["sharedfolderref"];
-        $object["enableWinPath"] = $object["enableWinPath"];
+        $object["enableWinPath"] = boolval($object["enableWinPath"]);
 
         // Remove useless fields from the result object.
         unset($object["entries"]);
@@ -375,11 +374,38 @@ class OMVRpcServicePxe extends OMVRpcServiceAbstract
 
     public function setImageDownload($params, $context)
     {
+        global $xmlConfig;
+
         // Validate the RPC caller context.
         $this->validateMethodContext(
             $context,
             array( "role" => OMV_ROLE_ADMINISTRATOR )
         );
+
+        // Get configuration object
+        $object = $xmlConfig->get($this->getXPath());
+        if (is_null($object)) {
+            throw new OMVException(OMVErrorMsg::E_CONFIG_GET_OBJECT_FAILED, $this->getXPath());
+        }
+
+        // Get the nfs mntentref of tftp shared folder.
+        $xpath = sprintf("//services/nfs/shares/share[sharedfolderref='%s']", $object['sharedfolderref']);
+        $nfsObject = $xmlConfig->get($xpath);
+        if (!is_null($nfsObject))
+        {
+            // Get path of nfs export.
+            $xpath = sprintf("//system/fstab/mntent[uuid='%s']", $nfsObject['mntentref']);
+            $meObject = $xmlConfig->get($xpath);
+            if (is_null($meObject))
+            {
+                throw new OMVException(
+                    OMVErrorMsg::E_CONFIG_GET_OBJECT_FAILED,
+                    $xpath
+                );
+            }
+            $dir = $meObject['dir'];
+        }
+
 
         // Create a background process.
         $bgStatusFilename = $this->createBgProcStatus();
@@ -411,6 +437,12 @@ class OMVRpcServicePxe extends OMVRpcServiceAbstract
         $label  = trim(preg_replace("/LABEL/", "", $file[0], 1));
         $kernel = trim(preg_replace("/KERNEL/", "", $file[1], 1));
         $append = trim(preg_replace("/APPEND/", "", $file[2], 1));
+        
+        // Replace <Your_IP_Address>:<Your_NFS_Export> with server's hostname and nfs export dir
+        $append = str_replace("<Your_IP_Address>", gethostname(), $append);
+
+        if ( !empty($dir))
+            $append = str_replace("<Your_NFS_Export>", $dir, $append);
 
         $object = array(
             "uuid"   => $GLOBALS['OMV_UUID_UNDEFINED'],
