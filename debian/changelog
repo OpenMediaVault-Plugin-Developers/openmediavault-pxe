@@ -1,3 +1,9 @@
+openmediavault-pxe (1.6) stable; urgency=low
+
+  * Add IP Address combobox for images
+
+ -- OpenMediaVault Plugin Developers <plugins@omv-extras.org>  Thu, 09 Apr 2015 15:06:39 -0500
+
 openmediavault-pxe (1.5) stable; urgency=low
 
   * Automatically fill in path of nfs share

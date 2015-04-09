@@ -37,6 +37,7 @@ Ext.define("OMV.module.admin.service.pxe.Images", {
     mode            : "local",
 
     packageName : "",
+    address     : "",
 
     getButtonItems : function() {
         var me = this;
@@ -77,6 +78,7 @@ Ext.define("OMV.module.admin.service.pxe.Images", {
             items : [{
                 xtype         : "combo",
                 name          : "images",
+                fieldLabel    : _("Image"),
                 allowBlank    : false,
                 editable      : false,
                 triggerAction : "all",
@@ -105,6 +107,37 @@ Ext.define("OMV.module.admin.service.pxe.Images", {
                     }
                 }                
             },{
+                xtype         : "combo",
+                name          : "address",
+                fieldLabel    : _("IP Address"),
+                allowBlank    : true,
+                editable      : false,
+                triggerAction : "all",
+                displayField  : "address",
+                valueField    : "address",
+                store         : Ext.create("OMV.data.Store", {
+                    autoLoad : true,
+                    model    : OMV.data.Model.createImplicit({
+                        idProperty : "address",
+                        fields     : [
+                            { name : "address", type : "string" }
+                        ]
+                    }),
+                    proxy : {
+                        type    : "rpc",
+                        rpcData : {
+                            service : "Pxe",
+                            method  : "getIPAddresses"
+                        }
+                    }
+                }),
+                listeners     : {
+                    scope  : me,
+                    change : function(combo, value) {
+                        me.address = value;
+                    }
+                }                
+            },{
                 xtype   : "button",
                 name    : "install",
                 text    : _("Install"),
@@ -122,7 +155,8 @@ Ext.define("OMV.module.admin.service.pxe.Images", {
             rpcService      : "Pxe",
             rpcMethod       : "setImageDownload",
             rpcParams       : {
-                "package"  : me.packageName
+                "package" : me.packageName,
+                "address" : me.address
             },
             rpcIgnoreErrors : true,
             hideStartButton : true,

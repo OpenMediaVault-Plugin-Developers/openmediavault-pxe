@@ -80,6 +80,7 @@ class OMVRpcServicePxe extends OMVRpcServiceAbstract
         $this->registerMethod("getImageList");
         $this->registerMethod("updatePackageCache");
         $this->registerMethod("setImageDownload");
+        $this->registerMethod("getIPAddresses");
     }
 
     public function getSettings($params, $context)
@@ -438,8 +439,8 @@ class OMVRpcServicePxe extends OMVRpcServiceAbstract
         $kernel = trim(preg_replace("/KERNEL/", "", $file[1], 1));
         $append = trim(preg_replace("/APPEND/", "", $file[2], 1));
         
-        // Replace <Your_IP_Address>:<Your_NFS_Export> with server's hostname and nfs export dir
-        $append = str_replace("<Your_IP_Address>", gethostname(), $append);
+        // Replace <Your_IP_Address>:<Your_NFS_Export> with select IP address and nfs export dir
+        $append = str_replace("<Your_IP_Address>", $params['address'], $append);
 
         if ( !empty($dir))
             $append = str_replace("<Your_NFS_Export>", $dir, $append);
@@ -462,6 +463,37 @@ class OMVRpcServicePxe extends OMVRpcServiceAbstract
         $cmd = "omv-mkconf pxe update 2>&1";
         OMVUtil::exec($cmd, $output, $result);
     }
+
+    public function getIPAddresses($params, $context)
+    {
+        global $xmlConfig;
+
+        // Validate the RPC caller context.
+        $this->validateMethodContext(
+            $context,
+            array( "role" => OMV_ROLE_ADMINISTRATOR )
+        );
+
+        $objects = array();
+
+        $cmd = "ifconfig | grep 'inet addr:' | awk {'print $2'}";
+        OMVUtil::exec($cmd, $result);
+
+        foreach ($result as $address)
+        {
+            if (empty($address))
+                continue;
+
+            if (substr($address, 5, 3) == "127")
+                continue;
+
+            $objects[] = array(
+                "address" => trim(str_replace("addr:", "", $address))
+            );
+        }
+
+        return $objects;
+    }    
 }
 
 // Register the RPC service.
