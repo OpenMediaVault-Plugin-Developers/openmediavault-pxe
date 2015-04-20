@@ -476,7 +476,7 @@ class OMVRpcServicePxe extends OMVRpcServiceAbstract
 
         $objects = array();
 
-        $cmd = "ifconfig | grep 'inet addr:' | awk {'print $2'}";
+        $cmd = "ifconfig -a | grep 'inet' | cut -d: -f2 | awk {'print $1'}";
         OMVUtil::exec($cmd, $result);
 
         foreach ($result as $address)
@@ -484,11 +484,11 @@ class OMVRpcServicePxe extends OMVRpcServiceAbstract
             if (empty($address))
                 continue;
 
-            if (substr($address, 5, 3) == "127")
+            if (substr(trim($address), 0, 3) == "127")
                 continue;
 
             $objects[] = array(
-                "address" => trim(str_replace("addr:", "", $address))
+                "address" => trim($address)
             );
         }
 

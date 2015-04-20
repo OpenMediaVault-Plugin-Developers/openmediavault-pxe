@@ -1,3 +1,9 @@
+openmediavault-pxe (1.7) UNRELEASED; urgency=low
+
+  * Fix IP address list for non-english languages
+
+ -- OpenMediaVault Plugin Developers <plugins@omv-extras.org>  Mon, 20 Apr 2015 07:05:40 -0500
+
 openmediavault-pxe (1.6) stable; urgency=low
 
   * Add IP Address combobox for images
