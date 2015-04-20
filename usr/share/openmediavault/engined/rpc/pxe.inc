@@ -484,6 +484,9 @@ class OMVRpcServicePxe extends OMVRpcServiceAbstract
             if (empty($address))
                 continue;
 
+            if (filter_var(trim($address), FILTER_VALIDATE_IPV4) === false)
+                continue;
+
             if (substr(trim($address), 0, 3) == "127")
                 continue;
 
