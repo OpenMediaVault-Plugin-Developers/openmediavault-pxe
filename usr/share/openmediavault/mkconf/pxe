@@ -38,6 +38,10 @@ update()
 
     if [ "${enablewinpath}" = "1" ]; then
         cat <<EOF > /etc/tftp_remap.conf
+re ^pxeboot\.n12 Boot/pxeboot.n12
+re ^pxeboot\.com Boot/pxeboot.com
+re ^pxeboot\.0 Boot/pxeboot.n12
+re ^bootmgr\.exe Boot/bootmgr.exe
 rg \\ /
 EOF
     elif [ -e "/etc/tftp_remap.conf" ]; then
