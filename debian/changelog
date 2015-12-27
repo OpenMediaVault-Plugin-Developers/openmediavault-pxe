@@ -1,3 +1,9 @@
+openmediavault-pxe (1.8) stable; urgency=low
+
+  * Updated tftp_remap.conf for Windows installs
+
+ -- OpenMediaVault Plugin Developers <plugins@omv-extras.org>  Sun, 27 Dec 2015 14:31:50 +0100
+
 openmediavault-pxe (1.7) stable; urgency=low
 
   * Fix IP address list for non-english languages
