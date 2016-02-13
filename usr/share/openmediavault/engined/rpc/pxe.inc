@@ -1,6 +1,6 @@
 ﻿<?php
 /**
- * Copyright (C) 2014 OpenMediaVault Plugin Developers
+ * Copyright (C) 2014-2016 OpenMediaVault Plugin Developers
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -88,16 +88,19 @@ class OMVRpcServicePxe extends OMVRpcServiceAbstract
         global $xmlConfig;
 
         // Validate the RPC caller context.
-        $this->validateMethodContext($context, array(
-            "role" => OMV_ROLE_ADMINISTRATOR
-        ));
+        $this->validateMethodContext(
+            $context,
+            [ "role" => OMV_ROLE_ADMINISTRATOR ]
+        );
 
         // Get configuration object
         $object = $xmlConfig->get($this->getXPath());
         if (is_null($object)) {
-            throw new OMVException(OMVErrorMsg::E_CONFIG_GET_OBJECT_FAILED, $this->getXPath());
+            throw new OMVException(
+                OMVErrorMsg::E_CONFIG_GET_OBJECT_FAILED,
+                $this->getXPath()
+            );
         }
-
         // Modify result data
         $object["enableWinPath"] = boolval($object["enableWinPath"]);
 
@@ -113,9 +116,10 @@ class OMVRpcServicePxe extends OMVRpcServiceAbstract
         global $xmlConfig;
 
         // Validate the RPC caller context.
-        $this->validateMethodContext($context, array(
-            "role" => OMV_ROLE_ADMINISTRATOR
-        ));
+        $this->validateMethodContext(
+            $context,
+            [ "role" => OMV_ROLE_ADMINISTRATOR ]
+        );
 
         // Validate the parameters of the RPC service method.
         $this->validateMethodParams(
@@ -132,27 +136,32 @@ class OMVRpcServicePxe extends OMVRpcServiceAbstract
         // Get the existing configuration object.
         $oldObject = $xmlConfig->get( $this->getXPath() );
         if(is_null($oldObject)) {
-            throw new OMVException(OMVErrorMsg::E_CONFIG_GET_OBJECT_FAILED, $this->getXPath() );
+            throw new OMVException(
+                OMVErrorMsg::E_CONFIG_GET_OBJECT_FAILED,
+                $this->getXPath()
+            );
         }
 
         // Update the configuration object.
-        $object = array(
+        $object = [
             "sharedfolderref" => $params["sharedfolderref"],
             "enableWinPath"   => array_boolval($params,"enableWinPath"),
-            "entries"         => isset($oldObject["entries"]) ? $oldObject["entries"] : array(),
-            "menus"           => isset($oldObject["menus"]) ? $oldObject["menus"] : array()
-        );
+            "entries"         => isset($oldObject["entries"]) ? $oldObject["entries"] : [],
+            "menus"           => isset($oldObject["menus"]) ? $oldObject["menus"] : []
+        ];
 
         // Set configuration object
         if (false === $xmlConfig->replace($this->getXPath(), $object)) {
-            throw new OMVException(OMVErrorMsg::E_CONFIG_SET_OBJECT_FAILED, $this->getXPath());
+            throw new OMVException(
+                OMVErrorMsg::E_CONFIG_SET_OBJECT_FAILED,
+                $this->getXPath()
+            );
         }
 
         // Notify configuration changes
         $dispatcher = &OMVNotifyDispatcher::getInstance();
         $dispatcher->notify(OMV_NOTIFY_MODIFY, "org.openmediavault.services.pxe", $object);
     }
-
 
     public function getEntries($params, $context)
     {
@@ -161,7 +170,7 @@ class OMVRpcServicePxe extends OMVRpcServiceAbstract
         // Validate the RPC caller context.
         $this->validateMethodContext(
             $context,
-            array( "role" => OMV_ROLE_ADMINISTRATOR )
+            [ "role" => OMV_ROLE_ADMINISTRATOR ]
         );
 
         // Validate the parameters of the RPC service method.
@@ -177,8 +186,7 @@ class OMVRpcServicePxe extends OMVRpcServiceAbstract
 
         // Get configuration data.
         $objects = $xmlConfig->getList( $this->getXPathEntry() );
-        if (is_null($objects))
-        {
+        if (is_null($objects)) {
             throw new OMVException(
                 OMVErrorMsg::E_CONFIG_GET_OBJECT_FAILED,
                 $this->getXPathEntry()
@@ -197,7 +205,7 @@ class OMVRpcServicePxe extends OMVRpcServiceAbstract
         // Validate the RPC caller context.
         $this->validateMethodContext(
             $context,
-            array( "role" => OMV_ROLE_ADMINISTRATOR )
+            [ "role" => OMV_ROLE_ADMINISTRATOR ]
         );
 
         // Validate the parameters of the RPC service method.
@@ -211,14 +219,12 @@ class OMVRpcServicePxe extends OMVRpcServiceAbstract
         // Get the configuration object.
         $xPath = sprintf("%s[uuid='%s']", $this->getXPathEntry(), $params['uuid']);
         $object = $xmlConfig->get($xPath);
-        if (is_null($object))
-        {
+        if (is_null($object)) {
             throw new OMVException(
                 OMVErrorMsg::E_CONFIG_GET_OBJECT_FAILED,
                 $xPath
             );
         }
-
         // Modify the result object.
         $object['enable'] = boolval($object['enable']);
 
@@ -232,7 +238,7 @@ class OMVRpcServicePxe extends OMVRpcServiceAbstract
         // Validate the RPC caller context.
         $this->validateMethodContext(
             $context,
-            array( "role" => OMV_ROLE_ADMINISTRATOR )
+            [ "role" => OMV_ROLE_ADMINISTRATOR ]
         );
 
         // Validate the parameters of the RPC service method.
@@ -253,7 +259,7 @@ class OMVRpcServicePxe extends OMVRpcServiceAbstract
         );
 
         // Prepare configuration data
-        $object = array(
+        $object = [
             "uuid"   => ($params['uuid'] == $GLOBALS['OMV_UUID_UNDEFINED']) ? OMVUtil::uuid() : $params['uuid'],
             "enable" => array_boolval($params, "enable"),
             "group"  => $params['group'],
@@ -261,24 +267,20 @@ class OMVRpcServicePxe extends OMVRpcServiceAbstract
             "menu"   => $params['menu'],
             "kernel" => $params['kernel'],
             "append" => $params['append']
-        );
+        ];
 
         // Set the configuration data.
         $success = FALSE;
-        if ($params['uuid'] == $GLOBALS['OMV_UUID_UNDEFINED'])
-        {
+        if ($params['uuid'] == $GLOBALS['OMV_UUID_UNDEFINED']) {
             // Append object to configuration.
-            $success = $xmlConfig->set($this->getXPathEntries(), array("entry" => $object));
-        }
-        else
-        {
+            $success = $xmlConfig->set($this->getXPathEntries(), [ "entry" => $object ]);
+        } else {
             // Update existing configuration object.
             $xPath = sprintf("%s[uuid='%s']", $this->getXPathEntry(), $params['uuid']);
             $success = $xmlConfig->replace($xPath, $object);
         }
 
-        if (FALSE === $success)
-        {
+        if (FALSE === $success) {
             throw new OMVException(
                 OMVErrorMsg::E_CONFIG_SET_OBJECT_FAILED
             );
@@ -303,7 +305,7 @@ class OMVRpcServicePxe extends OMVRpcServiceAbstract
         // Validate the RPC caller context.
         $this->validateMethodContext(
             $context,
-            array( "role" => OMV_ROLE_ADMINISTRATOR )
+            [ "role" => OMV_ROLE_ADMINISTRATOR ]
         );
 
         // Validate the parameters of the RPC service method.
@@ -327,7 +329,7 @@ class OMVRpcServicePxe extends OMVRpcServiceAbstract
         // Validate the RPC caller context.
         $this->validateMethodContext(
             $context,
-            array( "role" => OMV_ROLE_ADMINISTRATOR )
+            [ "role" => OMV_ROLE_ADMINISTRATOR ]
         );
 
         // Get current time
@@ -335,23 +337,21 @@ class OMVRpcServicePxe extends OMVRpcServiceAbstract
 
         // if the cache doesn't exist or is older than 1 day, download it
         if ( !file_exists($this->getPackageCache()) or
-             ($time - filemtime($this->getPackageCache()) >= 60*60*24) )
-        {
+             ($time - filemtime($this->getPackageCache()) >= 60*60*24) ) {
             $this->updatePackageCache($params, $context);
         }
 
-        $objects = array();
+        $objects = [];
         $packages = file($this->getPackageCache());
 
         // Loop through our array, show HTML source as HTML source; and line numbers too.
-        foreach ($packages as $package)
-        {
+        foreach ($packages as $package) {
             if (empty($package))
                 continue;
 
-            $objects[] = array(
+            $objects[] = [
                 "name" => trim($package)
-            );
+            ];
         }
 
         // Filter the result.
@@ -363,7 +363,7 @@ class OMVRpcServicePxe extends OMVRpcServiceAbstract
         // Validate the RPC caller context.
         $this->validateMethodContext(
             $context,
-            array( "role" => OMV_ROLE_ADMINISTRATOR )
+            [ "role" => OMV_ROLE_ADMINISTRATOR ]
         );
 
         // Get packages file from web server and put in cache file
@@ -380,25 +380,26 @@ class OMVRpcServicePxe extends OMVRpcServiceAbstract
         // Validate the RPC caller context.
         $this->validateMethodContext(
             $context,
-            array( "role" => OMV_ROLE_ADMINISTRATOR )
+            [ "role" => OMV_ROLE_ADMINISTRATOR ]
         );
 
         // Get configuration object
         $object = $xmlConfig->get($this->getXPath());
         if (is_null($object)) {
-            throw new OMVException(OMVErrorMsg::E_CONFIG_GET_OBJECT_FAILED, $this->getXPath());
+            throw new OMVException(
+                OMVErrorMsg::E_CONFIG_GET_OBJECT_FAILED,
+                $this->getXPath()
+            );
         }
 
         // Get the nfs mntentref of tftp shared folder.
         $xpath = sprintf("//services/nfs/shares/share[sharedfolderref='%s']", $object['sharedfolderref']);
         $nfsObject = $xmlConfig->get($xpath);
-        if (!is_null($nfsObject))
-        {
+        if (!is_null($nfsObject)) {
             // Get path of nfs export.
             $xpath = sprintf("//system/fstab/mntent[uuid='%s']", $nfsObject['mntentref']);
             $meObject = $xmlConfig->get($xpath);
-            if (is_null($meObject))
-            {
+            if (is_null($meObject)) {
                 throw new OMVException(
                     OMVErrorMsg::E_CONFIG_GET_OBJECT_FAILED,
                     $xpath
@@ -407,12 +408,10 @@ class OMVRpcServicePxe extends OMVRpcServiceAbstract
             $dir = $meObject['dir'];
         }
 
-
         // Create a background process.
         $bgStatusFilename = $this->createBgProcStatus();
         $pid = $this->fork();
-        if ($pid > 0)   // Parent process.
-        {
+        if ($pid > 0) { // Parent process.
             $this->initializeBgProcStatus($bgStatusFilename, $pid);
             return $bgStatusFilename;
         }
@@ -445,7 +444,7 @@ class OMVRpcServicePxe extends OMVRpcServiceAbstract
         if ( !empty($dir))
             $append = str_replace("<Your_NFS_Export>", $dir, $append);
 
-        $object = array(
+        $object = [
             "uuid"   => $GLOBALS['OMV_UUID_UNDEFINED'],
             "enable" => true,
             "group"  => "Default",
@@ -453,8 +452,7 @@ class OMVRpcServicePxe extends OMVRpcServiceAbstract
             "menu"   => "",
             "kernel" => $kernel,
             "append" => $append
-        );
-
+        ];
         $this->setEntry($object, $context);
 
         // remove config.txt
@@ -471,16 +469,15 @@ class OMVRpcServicePxe extends OMVRpcServiceAbstract
         // Validate the RPC caller context.
         $this->validateMethodContext(
             $context,
-            array( "role" => OMV_ROLE_ADMINISTRATOR )
+            [ "role" => OMV_ROLE_ADMINISTRATOR ]
         );
 
-        $objects = array();
+        $objects = [];
 
         $cmd = "ifconfig -a | grep 'inet' | cut -d: -f2 | awk {'print $1'}";
         OMVUtil::exec($cmd, $result);
 
-        foreach ($result as $address)
-        {
+        foreach ($result as $address) {
             if (empty($address))
                 continue;
 
@@ -490,9 +487,9 @@ class OMVRpcServicePxe extends OMVRpcServiceAbstract
             if (substr(trim($address), 0, 3) == "127")
                 continue;
 
-            $objects[] = array(
+            $objects[] = [
                 "address" => trim($address)
-            );
+            ];
         }
 
         return $objects;

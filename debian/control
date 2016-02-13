@@ -8,5 +8,8 @@ Standards-Version: 3.9.3
 
 Package: openmediavault-pxe
 Architecture: all
-Depends: openmediavault (>= 1.0), ${misc:Depends}, syslinux-common
+Depends: openmediavault (>= 3.0.9),
+         pxelinux,
+         syslinux-common,
+         ${misc:Depends}
 Description: pxe plugin for OpenMediaVault.

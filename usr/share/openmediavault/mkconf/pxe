@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# Copyright (C) 2014 OpenMediaVault Plugin Developers
+# Copyright (C) 2014-2016 OpenMediaVault Plugin Developers
 #
 # This file is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -47,10 +47,14 @@ EOF
     elif [ -e "/etc/tftp_remap.conf" ]; then
         rm /etc/tftp_remap.conf
     fi
-    invoke-rc.d tftpd-hpa restart
+    systemctl restart tftpd-hpa.service
 
-    cp -f /usr/lib/syslinux/vesamenu.c32 "${PXE_PATH}"
-    cp -f /usr/lib/syslinux/pxelinux.0 "${PXE_PATH}"
+    if [ -f "/usr/lib/syslinux/modules/bios/vesamenu.c32" ]; then
+        cp -f /usr/lib/syslinux/modules/bios/vesamenu.c32 "${PXE_PATH}"
+    fi
+    if [ -f "/usr/lib/PXELINUX/pxelinux.0" ]; then
+        cp -f /usr/lib/PXELINUX/pxelinux.0 "${PXE_PATH}"
+    fi
 
     rm -f ${PXE_CONFIG}.*
 

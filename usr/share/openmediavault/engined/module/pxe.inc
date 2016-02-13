@@ -1,7 +1,6 @@
 <?php
-
 /**
- * Copyright (C) 2014 OpenMediaVault Plugin Developers
+ * Copyright (C) 2014-2016 OpenMediaVault Plugin Developers
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,11 +20,9 @@ require_once "openmediavault/module.inc";
 require_once "openmediavault/config.inc";
 require_once "openmediavault/error.inc";
 require_once "openmediavault/util.inc";
-require_once "openmediavault/initscript.inc";
 
 class OMVModulePxe extends OMVModuleServiceAbstract implements
-    OMVINotifyListener,
-    OMVIModuleServiceStatus
+    OMVINotifyListener, OMVIModuleServiceStatus
 {
     /* Helpers */
 
@@ -38,7 +35,7 @@ class OMVModulePxe extends OMVModuleServiceAbstract implements
     {
         return sprintf("%s.entries.entry", $this->getEventMessagePath());
     }
-    
+
     private function getXPath()
     {
         return "/config/services/pxe";
@@ -72,12 +69,12 @@ class OMVModulePxe extends OMVModuleServiceAbstract implements
 
         //$initd = new OMVSysVInitScript($this->getName());
 
-        return array(
+        return [
             "name"    => $this->getName(),
             "title"   => gettext("PXE"),
-            "enabled" => boolval($object["enable"]),
-            "running" => true//$initd->status() == 0
-        );
+            "enabled" => true,
+            "running" => true
+        ];
     }
 
     /**
@@ -94,42 +91,7 @@ class OMVModulePxe extends OMVModuleServiceAbstract implements
                 implode("\n", $output)
             );
         }
-		
-    }
 
-    /**
-     * Start the service
-     */
-    public function startService()
-    {
-        /*global $xmlConfig;
-
-        $object = $xmlConfig->get($this->getXPath());
-
-        if (is_null($object)) {
-            throw new OMVException(
-                OMVErrorMsg::E_CONFIG_GET_OBJECT_FAILED,
-                $this->getXPath()
-            );
-        }
-
-        if (!$object["enable"]) {
-            return;
-        }
-
-        $initd = new OMVSysVInitScript($this->getName(), true);
-        $initd->exec();
-		*/
-    }
-
-    /**
-     * Stop the service
-     */
-    public function stopService()
-    {
-        /*$initd = new OMVSysVInitScript($this->getName());
-        $initd->exec();
-		*/
     }
 
     /**

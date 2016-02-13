@@ -1,3 +1,9 @@
+openmediavault-pxe (3.0) stable; urgency=low
+
+  * Update for OMV 3.0
+
+ -- OpenMediaVault Plugin Developers <plugins@omv-extras.org>  Sat, 13 Feb 2016 17:53:51 -0600
+
 openmediavault-pxe (1.8) stable; urgency=low
 
   * Updated tftp_remap.conf for Windows installs
