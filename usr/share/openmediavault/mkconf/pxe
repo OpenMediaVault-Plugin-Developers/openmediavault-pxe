@@ -55,6 +55,18 @@ EOF
     if [ -f "/usr/lib/PXELINUX/pxelinux.0" ]; then
         cp -f /usr/lib/PXELINUX/pxelinux.0 "${PXE_PATH}"
     fi
+    if [ -f "/usr/lib/syslinux/modules/bios/ldlinux.c32" ]; then
+        cp -f /usr/lib/syslinux/modules/bios/ldlinux.c32 "${PXE_PATH}"
+    fi
+    if [ -f "/usr/lib/syslinux/modules/bios/libcom32.c32" ]; then
+        cp -f /usr/lib/syslinux/modules/bios/libcom32.c32 "${PXE_PATH}"
+    fi
+    if [ -f "/usr/lib/syslinux/modules/bios/libutil.c32" ]; then
+        cp -f /usr/lib/syslinux/modules/bios/libutil.c32 "${PXE_PATH}"
+    fi
+    if [ -f "/usr/lib/syslinux/modules/bios/chain.c32" ]; then
+        cp -f /usr/lib/syslinux/modules/bios/chain.c32 "${PXE_PATH}"
+    fi
 
     rm -f ${PXE_CONFIG}.*
 
@@ -75,7 +87,7 @@ EOF
     #Loop through entries and output them into the config file
     count=$(omv_config_get_count "${SERVICE_XPATH_ENTRY}");
     index=1;
-    while [ ${index} -le ${count} ]; do    
+    while [ ${index} -le ${count} ]; do
         enable="$(omv_config_get "${SERVICE_XPATH_ENTRY}[position()=${index}]/enable")"
         group="$(omv_config_get "${SERVICE_XPATH_ENTRY}[position()=${index}]/group")"
         label="$(omv_config_get "${SERVICE_XPATH_ENTRY}[position()=${index}]/label")"
@@ -107,7 +119,7 @@ LABEL ${label}
  KERNEL ${kernel}
  APPEND ${append}
 EOF
-                
+
             else
                 cat <<EOF >> "${PXE_CONFIG}"
 
