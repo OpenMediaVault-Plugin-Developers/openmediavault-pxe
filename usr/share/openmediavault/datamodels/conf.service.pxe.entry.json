@@ -1,0 +1,40 @@
+{
+	"type": "config",
+	"id": "conf.service.pxe.entry",
+	"title": "PXE Entry",
+	"queryinfo": {
+		"xpath": "//services/pxe/entries/entry",
+		"iterable": true,
+		"idproperty": "uuid"
+	},
+	"properties": {
+		"uuid": {
+			"type": "string",
+			"format": "uuidv4"
+		},
+		"enable": {
+			"type": "boolean",
+			"default": false
+		},
+		"group": {
+			"type": "string",
+			"default": ""
+		},
+		"label": {
+			"type": "string",
+			"default": ""
+		},
+		"menu": {
+			"type": "string",
+			"default": ""
+		},
+		"kernel": {
+			"type": "string",
+			"default": ""
+		},
+		"append": {
+			"type": "string",
+			"default": ""
+		}
+	}
+}

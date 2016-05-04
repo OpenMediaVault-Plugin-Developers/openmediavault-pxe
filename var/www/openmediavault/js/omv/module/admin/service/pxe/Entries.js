@@ -1,10 +1,6 @@
 /**
  * @license     http://www.gnu.org/licenses/gpl.html GPL Version 3
- * @author      Ian Moore <imooreyahoo@gmail.com>
- * @author      Marcel Beck <marcel.beck@mbeck.org>
  * @author      OpenMediaVault Plugin Developers <plugins@omv-extras.org>
- * @copyright   Copyright (c) 2011 Ian Moore
- * @copyright   Copyright (c) 2012 Marcel Beck
  * @copyright   Copyright (c) 2013-2016 OpenMediaVault Plugin Developers
  *
  * This program is free software: you can redistribute it and/or modify
@@ -163,7 +159,7 @@ Ext.define("OMV.module.admin.service.pxe.Entries", {
                     type    : "rpc",
                     rpcData : {
                         service : "PXE",
-                        method  : "getEntries"
+                        method  : "getEntryList"
                     }
                 }
             })

@@ -73,9 +73,9 @@ Ext.define("OMV.module.admin.service.pxe.Information", {
                         '<li>' +
 						'<b>Extra Options</b> Replace 192.168.178.0 with your Network Range.<br>' + 
 						'port=0<br>' +
-'dhcp-range=192.168.178.0,proxy<br>' +
-'pxe-service=x86PC,"PXE Boot-Server",pxelinux<br>' +
-'resolv-file=/etc/resolv.conf<br>' +
+                        'dhcp-range=192.168.178.0,proxy<br>' +
+                        'pxe-service=x86PC,"PXE Boot-Server",pxelinux<br>' +
+                        'resolv-file=/etc/resolv.conf<br>' +
 						'</li>' +
                         '</ul>' 
             }]

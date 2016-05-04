@@ -106,7 +106,7 @@ Ext.define("OMV.module.admin.service.pxe.Images", {
                     change : function(combo, value) {
                         me.packageName = value;
                     }
-                }                
+                }
             },{
                 xtype         : "combo",
                 name          : "address",
@@ -137,7 +137,7 @@ Ext.define("OMV.module.admin.service.pxe.Images", {
                     change : function(combo, value) {
                         me.address = value;
                     }
-                }                
+                }
             },{
                 xtype   : "button",
                 name    : "install",

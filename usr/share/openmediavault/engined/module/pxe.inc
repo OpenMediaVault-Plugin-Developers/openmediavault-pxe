@@ -15,37 +15,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
-require_once "openmediavault/module.inc";
-require_once "openmediavault/config.inc";
-require_once "openmediavault/error.inc";
-require_once "openmediavault/util.inc";
-
-class OMVModulePxe extends OMVModuleServiceAbstract implements
-    OMVINotifyListener, OMVIModuleServiceStatus
+class OMVModulePxe extends \OMV\Engine\Module\ServiceAbstract
+    implements \OMV\Engine\Notify\IListener, \OMV\Engine\Module\IServiceStatus
 {
-    /* Helpers */
-
-    private function getEventMessagePath()
-    {
-        return "org.openmediavault.services.pxe";
-    }
-
-    private function getEventMessagePathEntry()
-    {
-        return sprintf("%s.entries.entry", $this->getEventMessagePath());
-    }
-
-    private function getXPath()
-    {
-        return "/config/services/pxe";
-    }
-
-    /* /Helpers */
-
-    /**
-     * Get the module name.
-     */
     public function getName()
     {
         return "pxe";
@@ -56,19 +28,6 @@ class OMVModulePxe extends OMVModuleServiceAbstract implements
      */
     public function getStatus()
     {
-        global $xmlConfig;
-
-        $object = $xmlConfig->get($this->getXPath());
-
-        if (is_null($object)) {
-            throw new OMVException(
-                OMVErrorMsg::E_CONFIG_GET_OBJECT_FAILED,
-                $this->getXPath()
-            );
-        }
-
-        //$initd = new OMVSysVInitScript($this->getName());
-
         return [
             "name"    => $this->getName(),
             "title"   => gettext("PXE"),
@@ -82,37 +41,25 @@ class OMVModulePxe extends OMVModuleServiceAbstract implements
      */
     public function applyConfig()
     {
-        $cmd = sprintf("omv-mkconf %s 2>&1", $this->getName());
-
-        if (0 !== $this->exec($cmd, $output)) {
-            throw new OMVException(
-                OMVErrorMsg::E_EXEC_FAILED,
-                $cmd,
-                implode("\n", $output)
-            );
-        }
-
+        $cmd = new \OMV\System\Process("omv-mkconf", "pxe");
+        $cmd->setRedirect2to1(TRUE);
+        $cmd->execute();
     }
 
     /**
      * Bind listeners.
      */
-    public function bindListeners(OMVNotifyDispatcher $dispatcher)
+    function bindListeners(\OMV\Engine\Notify\Dispatcher $dispatcher)
     {
         $dispatcher->addListener(
-            OMV_NOTIFY_CREATE | OMV_NOTIFY_MODIFY | OMV_NOTIFY_DELETE,
-            $this->getEventMessagePath(),
-            array($this, "setDirty")
+            OMV_NOTIFY_MODIFY,
+            "org.openmediavault.conf.service.pxe",
+            [$this, "setDirty"]
         );
-
         $dispatcher->addListener(
             OMV_NOTIFY_CREATE | OMV_NOTIFY_MODIFY | OMV_NOTIFY_DELETE,
-            $this->getEventMessagePathEntry(),
-            array($this, "setDirty")
+            "org.openmediavault.conf.service.pxe.entry",
+            [$this, "setDirty"]
         );
     }
 }
-
-// Register module
-$moduleMgr = &OMVModuleMgr::getInstance();
-$moduleMgr->registerModule(new OMVModulePxe());

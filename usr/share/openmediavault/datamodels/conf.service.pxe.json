@@ -1,0 +1,60 @@
+{
+	"type": "config",
+	"id": "conf.service.pxe",
+	"title": "PXE",
+	"queryinfo": {
+		"xpath": "//services/pxe",
+		"iterable": false
+	},
+	"properties": {
+		"sharedfolderref": {
+			"type": "string",
+			"format": "uuidv4"
+		},
+		"enableWinPath": {
+			"type": "boolean",
+			"default": false
+		},
+		"entries": {
+			"type": "object",
+			"properties": {
+				"entry": {
+					"type": "array",
+					"items": {
+						"type": "object",
+						"properties": {
+							"uuid": {
+								"type": "string",
+								"format": "uuidv4"
+							},
+							"enable": {
+								"type": "boolean",
+								"default": false
+							},
+							"group": {
+								"type": "string",
+								"default": ""
+							},
+							"label": {
+								"type": "string",
+								"default": ""
+							},
+							"menu": {
+								"type": "string",
+								"default": ""
+							},
+							"kernel": {
+								"type": "string",
+								"default": ""
+							},
+							"append": {
+								"type": "string",
+								"default": ""
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}

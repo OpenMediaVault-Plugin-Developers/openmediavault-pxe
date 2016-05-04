@@ -1,0 +1,55 @@
+[{
+	"type": "rpc",
+	"id": "rpc.pxe.setsettings",
+	"params": {
+		"type": "object",
+		"properties": {
+			"sharedfolderref": {
+				"type": "string",
+				"format": "uuidv4",
+				"required": true
+			},
+			"enableWinPath": {
+				"type": "boolean",
+				"required": true
+			}
+		}
+	}
+},{
+	"type": "rpc",
+	"id": "rpc.pxe.setentry",
+	"params": {
+		"type": "object",
+		"properties": {
+			"uuid": {
+				"type": "string",
+				"format": "uuidv4",
+				"required": true
+			},
+			"enable": {
+				"type": "boolean",
+				"required": true
+			},
+			"group": {
+				"type": "string",
+				"required": true
+			},
+			"label": {
+				"type": "string",
+				"required": true
+			},
+			"menu": {
+				"type": "string",
+				"required": false
+			},
+			"kernel": {
+				"type": "string",
+				"required": true
+			},
+			"append": {
+				"type": "string",
+				"required": true
+			}
+		}
+	}
+}]
