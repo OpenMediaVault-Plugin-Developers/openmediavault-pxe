@@ -54,7 +54,7 @@ Ext.define("OMV.module.admin.service.pxe.Entry", {
             checked: true
         },{
             xtype      : "textfield",
-            name       : "group",
+            name       : "grp",
             fieldLabel : _("Group"),
             allowBlank : false
         },{
@@ -114,8 +114,8 @@ Ext.define("OMV.module.admin.service.pxe.Entries", {
     },{
         text      : _("Group"),
         sortable  : true,
-        dataIndex : "group",
-        stateId   : "group"
+        dataIndex : "grp",
+        stateId   : "grp"
     },{
         text: _("LABEL"),
         sortable: true,
@@ -148,7 +148,7 @@ Ext.define("OMV.module.admin.service.pxe.Entries", {
                     fields: [
                         { name: "uuid", type: "string" },
                         { name: "enable", type: "boolean" },
-                        { name: "group", type: "string" },
+                        { name: "grp", type: "string" },
                         { name: "label", type: "string" },
                         { name: "menu", type: "string" },
                         { name: "kernel", type: "string" },

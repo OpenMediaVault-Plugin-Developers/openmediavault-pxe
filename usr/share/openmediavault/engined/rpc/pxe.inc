@@ -217,7 +217,7 @@ class OMVRpcServicePxe extends \OMV\Rpc\ServiceAbstract
         $newEntry = [
             "uuid"   => $GLOBALS['OMV_UUID_UNDEFINED'],
             "enable" => true,
-            "group"  => "Default",
+            "grp"    => "Default",
             "label"  => $label,
             "menu"   => "",
             "kernel" => $kernel,

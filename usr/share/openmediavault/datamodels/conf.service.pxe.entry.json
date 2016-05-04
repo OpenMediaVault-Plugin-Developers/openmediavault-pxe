@@ -16,7 +16,7 @@
 			"type": "boolean",
 			"default": false
 		},
-		"group": {
+		"grp": {
 			"type": "string",
 			"default": ""
 		},
