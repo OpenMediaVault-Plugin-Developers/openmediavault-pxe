@@ -1,3 +1,9 @@
+openmediavault-pxe (3.2) stable; urgency=low
+
+  * Rename group to grp
+
+ -- OpenMediaVault Plugin Developers <plugins@omv-extras.org>  Thu, 05 May 2016 12:37:43 -0500
+
 openmediavault-pxe (3.1) stable; urgency=low
 
   * Update for datamodels
