@@ -89,7 +89,7 @@ EOF
     index=1;
     while [ ${index} -le ${count} ]; do
         enable="$(omv_config_get "${SERVICE_XPATH_ENTRY}[position()=${index}]/enable")"
-        group="$(omv_config_get "${SERVICE_XPATH_ENTRY}[position()=${index}]/group")"
+        group="$(omv_config_get "${SERVICE_XPATH_ENTRY}[position()=${index}]/grp")"
         label="$(omv_config_get "${SERVICE_XPATH_ENTRY}[position()=${index}]/label")"
         menu="$(omv_config_get "${SERVICE_XPATH_ENTRY}[position()=${index}]/menu")"
         kernel="$(omv_config_get "${SERVICE_XPATH_ENTRY}[position()=${index}]/kernel")"

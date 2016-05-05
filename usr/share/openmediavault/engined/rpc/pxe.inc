@@ -178,11 +178,6 @@ class OMVRpcServicePxe extends \OMV\Rpc\ServiceAbstract
     {
         // Validate the RPC caller context.
         $this->validateMethodContext($context, ["role" => OMV_ROLE_ADMINISTRATOR]);
-        // Get the configuration object.
-        $db = \OMV\Config\Database::getInstance();
-        $object = $db->get("conf.service.pxe");
-        // Remove useless properties from the object.
-        $object->remove("entries");
 
         // Create a background process.
         $bgStatusFilename = $this->createBgProcStatus();
@@ -198,12 +193,15 @@ class OMVRpcServicePxe extends \OMV\Rpc\ServiceAbstract
             $cmd = sprintf("omv-mkconf pxe package %s 2>&1", $params['package']);
             $this->exec($cmd, $output, $bgOutputFilename);
             $this->finalizeBgProcStatus($bgStatusFilename, $output);
-            exit(0);
         } catch(\Exception $e) {
             $this->finalizeBgProcStatus($bgStatusFilename, "", $e);
             exit(1);
         }
 
+        // Get the configuration object.
+        $db = \OMV\Config\Database::getInstance();
+        // Prepare the configuration object.
+        $object = new \OMV\Config\ConfigObject("conf.service.pxe.entry");
         // add info from config.txt to entries
         $configTxt = "/tmp/pxeinstall/config.txt";
         $file = explode(PHP_EOL, file_get_contents($configTxt));
@@ -214,7 +212,8 @@ class OMVRpcServicePxe extends \OMV\Rpc\ServiceAbstract
         // Replace <Your_IP_Address>:<Your_NFS_Export> with select IP address and nfs export dir
         $append = str_replace("<Your_IP_Address>", $params['address'], $append);
 
-        $newEntry = [
+        // Set the configuration object.
+        $this->callMethod("setEntry", [
             "uuid"   => $GLOBALS['OMV_UUID_UNDEFINED'],
             "enable" => true,
             "grp"    => "Default",
@@ -222,8 +221,7 @@ class OMVRpcServicePxe extends \OMV\Rpc\ServiceAbstract
             "menu"   => "",
             "kernel" => $kernel,
             "append" => $append
-        ];
-        $this->setEntry($newEntry, $context);
+        ], $context);
 
         // remove config.txt
         unlink($configTxt);
