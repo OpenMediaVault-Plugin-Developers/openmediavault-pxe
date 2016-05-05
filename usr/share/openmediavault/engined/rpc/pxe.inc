@@ -198,10 +198,6 @@ class OMVRpcServicePxe extends \OMV\Rpc\ServiceAbstract
             exit(1);
         }
 
-        // Get the configuration object.
-        $db = \OMV\Config\Database::getInstance();
-        // Prepare the configuration object.
-        $object = new \OMV\Config\ConfigObject("conf.service.pxe.entry");
         // add info from config.txt to entries
         $configTxt = "/tmp/pxeinstall/config.txt";
         $file = explode(PHP_EOL, file_get_contents($configTxt));
