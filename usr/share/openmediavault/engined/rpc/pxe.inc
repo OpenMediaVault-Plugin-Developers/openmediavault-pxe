@@ -65,13 +65,6 @@ class OMVRpcServicePxe extends \OMV\Rpc\ServiceAbstract
         $db->set($object);
         // Remove useless properties from the object.
         $object->remove("entries");
-        // Notify configuration changes.
-        $dispatcher = \OMV\Engine\Notify\Dispatcher::getInstance();
-        $dispatcher->notify(
-            OMV_NOTIFY_MODIFY,
-            "org.openmediavault.conf.service.pxe",
-            $object->getAssoc()
-        );
         // Return the configuration object.
         return $object->getAssoc();
     }
@@ -111,16 +104,8 @@ class OMVRpcServicePxe extends \OMV\Rpc\ServiceAbstract
         $object = new \OMV\Config\ConfigObject("conf.service.pxe.entry");
         $object->setAssoc($params);
         // Set the configuration object.
-        $isNew = $object->isNew();
         $db = \OMV\Config\Database::getInstance();
         $db->set($object);
-        // Notify configuration changes.
-        $dispatcher = \OMV\Engine\Notify\Dispatcher::getInstance();
-        $dispatcher->notify(
-            $isNew ? OMV_NOTIFY_CREATE : OMV_NOTIFY_MODIFY,
-            "org.openmediavault.conf.service.pxe.entry",
-            $object->getAssoc()
-        );
         // Return the configuration object.
         return $object->getAssoc();
     }
@@ -132,11 +117,11 @@ class OMVRpcServicePxe extends \OMV\Rpc\ServiceAbstract
         // Validate the parameters of the RPC service method.
         $this->validateMethodParams($params, "rpc.common.objectuuid");
         // Delete the configuration object.
-        return $this->deleteConfigObjectByUuid(
-            "conf.service.pxe.entry",
-            $params['uuid'],
-            "org.openmediavault.conf.service.pxe.entry"
-        );
+        $db = \OMV\Config\Database::getInstance();
+        $object = $db->get("conf.service.pxe.entry", $params['uuid']);
+        $db->delete($object);
+        // Return the deleted configuration object.
+        return $object->getAssoc();
     }
 
     public function getImageList($params, $context)
