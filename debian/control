@@ -8,7 +8,7 @@ Standards-Version: 3.9.3
 
 Package: openmediavault-pxe
 Architecture: all
-Depends: openmediavault (>= 3.0.26),
+Depends: openmediavault (>= 3.0.40),
          pxelinux,
          syslinux-common,
          ${misc:Depends}

@@ -12,10 +12,10 @@ case "$1" in
         SERVICE_XPATH_ENTRY="${SERVICE_XPATH}/entries/entry"
 
         if ! omv_config_exists "${SERVICE_XPATH}"; then
-            omv_config_add_element "/config/services" "${SERVICE_XPATH_NAME}"
-            omv_config_add_element "${SERVICE_XPATH}" "sharedfolderref" ""
-            omv_config_add_element "${SERVICE_XPATH}" "enableWinPath" "0"
-            omv_config_add_element "${SERVICE_XPATH}" "entries"
+            omv_config_add_node "/config/services" "${SERVICE_XPATH_NAME}"
+            omv_config_add_key "${SERVICE_XPATH}" "sharedfolderref" ""
+            omv_config_add_key "${SERVICE_XPATH}" "enableWinPath" "0"
+            omv_config_add_node "${SERVICE_XPATH}" "entries"
         fi
 
         if dpkg --compare-versions "${2}" lt-nl "3.2"; then
@@ -24,10 +24,7 @@ case "$1" in
             index=1;
             while [ ${index} -le ${count} ]; do
                 if omv_config_exists "${SERVICE_XPATH_ENTRY}[position()=${index}]/group"; then
-                    group="$(omv_config_get "${SERVICE_XPATH_ENTRY}[position()=${index}]/group")"
-
-                    omv_config_add_element "${SERVICE_XPATH_ENTRY}[position()=${index}]" "grp" "${group}"
-                    omv_config_delete "${SERVICE_XPATH_ENTRY}[position()=${index}]/group"
+                    omv_config_rename "${SERVICE_XPATH_ENTRY}[position()=${index}]/group" "grp"
                 fi
                 index=$(( ${index} + 1 ))
             done;
