@@ -175,7 +175,7 @@ class OMVRpcServicePxe extends \OMV\Rpc\ServiceAbstract
         try {
             $bgOutputFilename = $this->createBgProcOutput();
             $this->updateBgProcStatus($bgStatusFilename, "outputfilename", $bgOutputFilename);
-            $cmd = sprintf("omv-mkconf pxe package %s 2>&1", $params['package']);
+            $cmd = sprintf("omv-mkconf pxe %s 2>&1", $params['package']);
             $this->exec($cmd, $output, $bgOutputFilename);
             $this->finalizeBgProcStatus($bgStatusFilename, $output);
         } catch(\Exception $e) {
@@ -195,7 +195,7 @@ class OMVRpcServicePxe extends \OMV\Rpc\ServiceAbstract
 
         // Set the configuration object.
         $this->callMethod("setEntry", [
-            "uuid"   => $GLOBALS['OMV_UUID_UNDEFINED'],
+            "uuid"   => \OMV\Environment::get("OMV_CONFIGOBJECT_NEW_UUID"),
             "enable" => true,
             "grp"    => "Default",
             "label"  => $label,

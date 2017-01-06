@@ -28,8 +28,9 @@ PXE_PATH=$(omv_get_sharedfolder_path "${PXE_SHARED_FOLDER_REF}")
 PXE_CONFIG_PATH="${PXE_PATH}/pxelinux.cfg"
 PXE_CONFIG="${PXE_CONFIG_PATH}/default"
 
-command=`echo $1 | cut -d \  -f 1`
-package=`echo $1 | cut -d \  -f 2`
+package=$1
+
+echo $package >> /tmp/pxe_package
 
 update()
 {
@@ -166,15 +167,15 @@ package()
     rm -f "${PXE_PATH}/${package}"
 }
 
-case ${command} in
-    package)
-        echo "Installing $package ..."
-        package
+case ${package} in
+    "" | update)
+        echo "Updating ..."
+        update
     ;;
 
     *)
-        echo "Updating ..."
-        update
+        echo "Installing $package ..."
+        package
     ;;
 esac
 

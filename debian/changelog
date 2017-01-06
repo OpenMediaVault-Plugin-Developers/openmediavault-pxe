@@ -1,3 +1,9 @@
+openmediavault-pxe (3.6) stable; urgency=low
+
+  * Fix package entry creation
+
+ -- OpenMediaVault Plugin Developers <plugins@omv-extras.org>  Fri, 06 Jan 2017 08:55:11 -0600
+
 openmediavault-pxe (3.5) stable; urgency=low
 
   * Update for OMV 3.0.40
