@@ -32,6 +32,10 @@
 			"type": "string",
 			"default": ""
 		},
+		"initrd": {
+			"type": "string",
+			"default": ""
+		},
 		"append": {
 			"type": "string",
 			"default": ""

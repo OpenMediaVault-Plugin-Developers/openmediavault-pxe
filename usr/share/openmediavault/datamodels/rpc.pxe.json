@@ -46,6 +46,10 @@
 				"type": "string",
 				"required": true
 			},
+			"initrd": {
+				"type": "string",
+				"required": false
+			},
 			"append": {
 				"type": "string",
 				"required": true

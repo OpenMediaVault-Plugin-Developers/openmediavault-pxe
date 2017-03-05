@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# Copyright (C) 2014-2016 OpenMediaVault Plugin Developers
+# Copyright (C) 2014-2017 OpenMediaVault Plugin Developers
 #
 # This file is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -94,6 +94,7 @@ EOF
         label="$(omv_config_get "${SERVICE_XPATH_ENTRY}[position()=${index}]/label")"
         menu="$(omv_config_get "${SERVICE_XPATH_ENTRY}[position()=${index}]/menu")"
         kernel="$(omv_config_get "${SERVICE_XPATH_ENTRY}[position()=${index}]/kernel")"
+        initrd="$(omv_config_get "${SERVICE_XPATH_ENTRY}[position()=${index}]/initrd")"
         append="$(omv_config_get "${SERVICE_XPATH_ENTRY}[position()=${index}]/append")"
 
         if [ "${enable}" != "0" ]; then
@@ -118,6 +119,7 @@ EOF
 LABEL ${label}
  MENU ${menu}
  KERNEL ${kernel}
+ INITRD ${initrd}
  APPEND ${append}
 EOF
 
@@ -127,6 +129,7 @@ EOF
 LABEL ${label}
  MENU ${menu}
  KERNEL ${kernel}
+ INITRD ${initrd}
  APPEND ${append}
 EOF
             fi

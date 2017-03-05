@@ -1,6 +1,6 @@
 ﻿<?php
 /**
- * Copyright (C) 2014-2016 OpenMediaVault Plugin Developers
+ * Copyright (C) 2014-2017 OpenMediaVault Plugin Developers
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -201,6 +201,7 @@ class OMVRpcServicePxe extends \OMV\Rpc\ServiceAbstract
             "label"  => $label,
             "menu"   => "",
             "kernel" => $kernel,
+            "initrd" => "",
             "append" => $append
         ], $context);
 

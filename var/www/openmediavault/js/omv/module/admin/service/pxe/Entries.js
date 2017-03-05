@@ -1,7 +1,7 @@
 /**
  * @license     http://www.gnu.org/licenses/gpl.html GPL Version 3
  * @author      OpenMediaVault Plugin Developers <plugins@omv-extras.org>
- * @copyright   Copyright (c) 2013-2016 OpenMediaVault Plugin Developers
+ * @copyright   Copyright (c) 2013-2017 OpenMediaVault Plugin Developers
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -74,6 +74,11 @@ Ext.define("OMV.module.admin.service.pxe.Entry", {
             allowBlank: false
         },{
             xtype: "textfield",
+            name: "initrd",
+            fieldLabel: _("INITRD"),
+            allowBlank: true
+        },{
+            xtype: "textfield",
             name: "append",
             fieldLabel: _("APPEND"),
             allowBlank: false
@@ -130,12 +135,20 @@ Ext.define("OMV.module.admin.service.pxe.Entries", {
         text: _("KERNEL"),
         sortable: true,
         dataIndex: "kernel",
-        stateID: "kernel"
+        stateID: "kernel",
+        flex: 1
+    },{
+        text: _("INITRD"),
+        sortable: true,
+        dataIndex: "initrd",
+        stateID: "initrd",
+        flex: 1
     },{
         text: _("APPEND"),
         sortable: true,
         dataIndex: "append",
-        stateID: "append"
+        stateID: "append",
+        flex: 1
     }],
 
     initComponent: function() {
@@ -152,6 +165,7 @@ Ext.define("OMV.module.admin.service.pxe.Entries", {
                         { name: "label", type: "string" },
                         { name: "menu", type: "string" },
                         { name: "kernel", type: "string" },
+                        { name: "initrd", type: "string" },
                         { name: "append", type: "string" }
                     ]
                 }),
