@@ -1,3 +1,9 @@
+openmediavault-pxe (3.8) stable; urgency=low
+
+  * Improve foreign content handling
+
+ -- OpenMediaVault Plugin Developers <plugins@omv-extras.org>  Sat, 18 Mar 2017 10:57:41 -0500
+
 openmediavault-pxe (3.7) stable; urgency=low
 
   * Add INITRD line

@@ -53,10 +53,10 @@ Ext.define("OMV.module.admin.service.pxe.Entry", {
             fieldLabel: _("Enable"),
             checked: true
         },{
-            xtype      : "textfield",
-            name       : "grp",
-            fieldLabel : _("Group"),
-            allowBlank : false
+            xtype: "textfield",
+            name: "grp",
+            fieldLabel: _("Group"),
+            allowBlank: false
         },{
             xtype: "textfield",
             name: "label",
@@ -117,33 +117,39 @@ Ext.define("OMV.module.admin.service.pxe.Entries", {
         trueIcon: "switch_on.png",
         falseIcon: "switch_off.png"
     },{
-        text      : _("Group"),
-        sortable  : true,
-        dataIndex : "grp",
-        stateId   : "grp"
+        xtype: "textcolumn",
+        text: _("Group"),
+        sortable: true,
+        dataIndex: "grp",
+        stateId: "grp"
     },{
+        xtype: "textcolumn",
         text: _("LABEL"),
         sortable: true,
         dataIndex: "label",
         stateID: "label"
     },{
+        xtype: "textcolumn",
         text: _("MENU"),
         sortable: true,
         dataIndex: "menu",
         stateID: "menu"
     },{
+        xtype: "textcolumn",
         text: _("KERNEL"),
         sortable: true,
         dataIndex: "kernel",
         stateID: "kernel",
         flex: 1
     },{
+        xtype: "textcolumn",
         text: _("INITRD"),
         sortable: true,
         dataIndex: "initrd",
         stateID: "initrd",
         flex: 1
     },{
+        xtype: "textcolumn",
         text: _("APPEND"),
         sortable: true,
         dataIndex: "append",
