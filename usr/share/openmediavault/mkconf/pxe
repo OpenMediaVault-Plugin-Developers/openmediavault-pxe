@@ -99,39 +99,32 @@ EOF
 
         if [ "${enable}" != "0" ]; then
             if [ "${group}" != "Default" ]; then
-                cat <<EOF >> "$PXE_CONFIG"
+                echo "" >> "$PXE_CONFIG"
+                echo "LABEL ${group}" >> "$PXE_CONFIG"
+                echo " KERNEL vesamenu.c32" >> "$PXE_CONFIG"
+                echo " APPEND pxelinux.cfg/default.${group}" >> "$PXE_CONFIG"
 
-LABEL ${group}
- KERNEL vesamenu.c32
- APPEND pxelinux.cfg/default.${group}
-EOF
                 if [ ! -e "${PXE_CONFIG}.${group}" ]; then
-                    cat <<EOF > "${PXE_CONFIG}.${group}"
-MENU TITLE PXE Boot System
-
-LABEL Main Menu
- KERNEL vesamenu.c32
- APPEND pxelinux.cfg/default
-EOF
+                    echo "MENU TITLE PXE Boot System" > "${PXE_CONFIG}.${group}"
+                    echo " LABEL Main Menu" >> "${PXE_CONFIG}.${group}"
+                    echo " KERNEL vesamenu.c32" >> "${PXE_CONFIG}.${group}"
+                    echo " APPEND pxelinux.cfg/default" >> "${PXE_CONFIG}.${group}"
                 fi
-                cat <<EOF >> "${PXE_CONFIG}.${group}"
 
-LABEL ${label}
- MENU ${menu}
- KERNEL ${kernel}
- INITRD ${initrd}
- APPEND ${append}
-EOF
+                echo "" >> "${PXE_CONFIG}.${group}"
+                echo "LABEL ${label}" >> "${PXE_CONFIG}.${group}"
+                [ -n "${menu}" ] && echo " MENU ${menu}" >> "${PXE_CONFIG}.${group}"
+                [ -n "${kernel}" ] && echo " KERNEL ${kernel}" >> "${PXE_CONFIG}.${group}"
+                [ -n "${initrd}" ] && echo " INITRD ${initrd}" >> "${PXE_CONFIG}.${group}"
+                [ -n "${append}" ] && echo " APPEND ${append}" >> "${PXE_CONFIG}.${group}"
 
             else
-                cat <<EOF >> "${PXE_CONFIG}"
-
-LABEL ${label}
- MENU ${menu}
- KERNEL ${kernel}
- INITRD ${initrd}
- APPEND ${append}
-EOF
+                echo "" >> "${PXE_CONFIG}"
+                echo "LABEL ${label}" >> "${PXE_CONFIG}"
+                [ -n "${menu}" ] && echo " MENU ${menu}" >> "${PXE_CONFIG}"
+                [ -n "${kernel}" ] && echo " KERNEL ${kernel}" >> "${PXE_CONFIG}"
+                [ -n "${initrd}" ] && echo " INITRD ${initrd}" >> "${PXE_CONFIG}"
+                [ -n "${append}" ] && echo " APPEND ${append}" >> "${PXE_CONFIG}"
             fi
         fi
 

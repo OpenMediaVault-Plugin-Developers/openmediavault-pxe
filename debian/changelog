@@ -1,6 +1,7 @@
 openmediavault-pxe (3.9) stable; urgency=low
 
   * Add openmediavault-tftp plugin as dependency
+  * Only output non-blank fields
 
  -- OpenMediaVault Plugin Developers <plugins@omv-extras.org>  Sun, 02 Apr 2017 17:19:56 -0500
 

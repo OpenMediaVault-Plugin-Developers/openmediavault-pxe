@@ -71,7 +71,7 @@ Ext.define("OMV.module.admin.service.pxe.Entry", {
             xtype: "textfield",
             name: "kernel",
             fieldLabel: _("KERNEL"),
-            allowBlank: false
+            allowBlank: true
         },{
             xtype: "textfield",
             name: "initrd",
@@ -81,7 +81,7 @@ Ext.define("OMV.module.admin.service.pxe.Entry", {
             xtype: "textfield",
             name: "append",
             fieldLabel: _("APPEND"),
-            allowBlank: false
+            allowBlank: true
         }];
     }
 });
