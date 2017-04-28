@@ -68,6 +68,9 @@ EOF
     if [ -f "/usr/lib/syslinux/modules/bios/chain.c32" ]; then
         cp -f /usr/lib/syslinux/modules/bios/chain.c32 "${PXE_PATH}"
     fi
+    if [ -f "/usr/lib/syslinux/memdisk" ]; then
+        cp -f /usr/lib/syslinux/memdisk "${PXE_PATH}"
+    fi
 
     rm -f ${PXE_CONFIG}.*
 
