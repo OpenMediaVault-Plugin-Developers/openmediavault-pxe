@@ -12,6 +12,12 @@
 			"enableWinPath": {
 				"type": "boolean",
 				"required": true
+			},
+			"port": {
+				"type": "integer",
+				"minimum": 1,
+				"maximum": 65535,
+				"required": true
 			}
 		}
 	}

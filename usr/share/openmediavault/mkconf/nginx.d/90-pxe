@@ -1,0 +1,50 @@
+#!/bin/sh
+#
+# Copyright (C) 2013-2017 OpenMediaVault Plugin Developers
+#
+# This file is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# any later version.
+#
+# This file is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this file. If not, see <http://www.gnu.org/licenses/>.
+
+set -e
+
+. /etc/default/openmediavault
+. /usr/share/openmediavault/scripts/helper-functions
+
+XPATH="/config/services/pxe"
+
+sfref=$(omv_config_get "${XPATH}/sharedfolderref")
+sfpath=$(omv_get_sharedfolder_path "${sfref}")
+port=$(omv_config_get "${XPATH}/port")
+
+ipv6=""
+if ! omv_is_ipv6_enabled; then
+    ipv6="#"
+fi
+
+cat <<EOF > "/etc/nginx/sites-available/openmediavault-pxe"
+server {
+    listen ${port};
+    ${ipv6}listen [::]:${port};
+    set \$root_path "${sfpath}";
+    root \$root_path;
+    index index.html;
+    access_log /var/log/nginx/openmediavault-pxe-access.log;
+    error_log  /var/log/nginx/openmediavault-pxe-error.log;
+    autoindex on;
+    large_client_header_buffers 4 32k;
+}
+EOF
+
+nginx_ensite openmediavault-pxe
+
+exit 0

@@ -31,6 +31,10 @@ case "$1" in
 
         fi
 
+        if dpkg --compare-versions "${2}" lt-nl "3.11"; then
+            omv_config_add_key "${SERVICE_XPATH}" "port" "8001"
+        fi
+        
         # Activate package triggers. These triggers are only set during the
         # package installation.
         dpkg-trigger update-fixperms

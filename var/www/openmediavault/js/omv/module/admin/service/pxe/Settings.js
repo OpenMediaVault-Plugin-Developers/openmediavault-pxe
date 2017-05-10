@@ -65,6 +65,21 @@ Ext.define("OMV.module.admin.service.pxe.Settings", {
                     text: _("The location of your PXE files.")
                 }]
             },{
+                xtype         : "numberfield",
+                name          : "port",
+                fieldLabel    : _("HTTP Port"),
+                vtype         : "port",
+                minValue      : 1,
+                maxValue      : 65535,
+                allowDecimals : false,
+                allowNegative : false,
+                allowBlank    : false,
+                value         : 8001,
+                plugins    : [{
+                    ptype : "fieldinfo",
+                    text  : _("Port to listen on for http downloads.")
+                }]
+            },{
                 xtype:  "checkbox",
                 name:   "enableWinPath",
                 fieldLabel: _("Enable Windows Path Support"),

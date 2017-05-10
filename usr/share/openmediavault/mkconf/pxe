@@ -56,6 +56,9 @@ EOF
     if [ -f "/usr/lib/PXELINUX/pxelinux.0" ]; then
         cp -f /usr/lib/PXELINUX/pxelinux.0 "${PXE_PATH}"
     fi
+    if [ -f "/usr/lib/PXELINUX/lpxelinux.0" ]; then
+        cp -f /usr/lib/PXELINUX/lpxelinux.0 "${PXE_PATH}"
+    fi
     if [ -f "/usr/lib/syslinux/modules/bios/ldlinux.c32" ]; then
         cp -f /usr/lib/syslinux/modules/bios/ldlinux.c32 "${PXE_PATH}"
     fi

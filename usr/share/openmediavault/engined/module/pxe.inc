@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (C) 2014-2016 OpenMediaVault Plugin Developers
+ * Copyright (C) 2014-2017 OpenMediaVault Plugin Developers
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -51,15 +51,27 @@ class OMVModulePxe extends \OMV\Engine\Module\ServiceAbstract
      */
     function bindListeners(\OMV\Engine\Notify\Dispatcher $dispatcher)
     {
+        $moduleMngr = \OMV\Engine\Module\Manager::getInstance();
+
         $dispatcher->addListener(
             OMV_NOTIFY_MODIFY,
-            "org.openmediavault.conf.service.pxe",
-            [$this, "setDirty"]
+            'org.openmediavault.conf.service.pxe',
+            [$this, 'setDirty']
         );
         $dispatcher->addListener(
             OMV_NOTIFY_CREATE | OMV_NOTIFY_MODIFY | OMV_NOTIFY_DELETE,
-            "org.openmediavault.conf.service.pxe.entry",
-            [$this, "setDirty"]
+            'org.openmediavault.conf.service.pxe.entry',
+            [$this, 'setDirty']
+        );
+        $dispatcher->addListener(
+            OMV_NOTIFY_MODIFY,
+            'org.openmediavault.conf.service.pxe',
+            [$moduleMngr->getModule('webserver'), 'setDirty']
+        );
+        $dispatcher->addListener(
+            OMV_NOTIFY_MODIFY,
+            'org.openmediavault.conf.system.sharedfolder',
+            [$moduleMngr->getModule('webserver'), 'setDirty']
         );
     }
 }
