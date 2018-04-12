@@ -5,17 +5,38 @@ set -e
 . /etc/default/openmediavault
 . /usr/share/openmediavault/scripts/helper-functions
 
+remove_action()
+{
+    OMV_NGINX_CONF_NAME="openmediavault-pxe"
+    NGINX_AVAILABLE_DIR="/etc/nginx/sites-available"
+    NGINX_ENABLED_DIR="/etc/nginx/sites-enabled"
+
+    # Remove configuration file in sites-enabled.
+    if [ -e "${NGINX_ENABLED_DIR}/${OMV_NGINX_CONF_NAME}" ]; then
+        rm "${NGINX_ENABLED_DIR}/${OMV_NGINX_CONF_NAME}"
+    fi
+
+    # Remove configuration file in sites-available.
+    if [ -e "${NGINX_AVAILABLE_DIR}/${OMV_NGINX_CONF_NAME}" ]; then
+        rm "${NGINX_AVAILABLE_DIR}/${OMV_NGINX_CONF_NAME}"
+    fi
+}
+
 case "$1" in
     purge)
         SERVICE_XPATH_NAME="pxe"
         SERVICE_XPATH="/config/services/${SERVICE_XPATH_NAME}"
 
+        remove_action
+
         if omv_config_exists "${SERVICE_XPATH}"; then
             omv_config_delete "${SERVICE_XPATH}"
         fi
+
     ;;
 
     remove)
+        remove_action
     ;;
 
     upgrade|failed-upgrade|abort-install|abort-upgrade|disappear)

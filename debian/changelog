@@ -1,8 +1,14 @@
-openmediavault-pxe (3.11) UNRELEASED; urgency=medium
+openmediavault-pxe (3.12) stable; urgency=low
+
+  * Improve uninstall
+
+ -- OpenMediaVault Plugin Developers <plugins@omv-extras.org>  Thu, 12 Apr 2018 09:01:28 -0500
+
+openmediavault-pxe (3.11) stable; urgency=low
 
   * Add web downloads
 
- -- OpenMediaVault Plugin Developers <plugins@omv-extras.org>  Wed, 10 May 2017 10:46:13 -0500
+ -- OpenMediaVault Plugin Developers <plugins@omv-extras.org>  Sat, 02 Sep 2017 12:37:06 -0500
 
 openmediavault-pxe (3.10) stable; urgency=low
 
